@@ -20,6 +20,18 @@ class DegreeController extends Controller
         return ApiResponse::success('Success',$degrees);
     }
 
+    public function degreePaginate(Request $request){
+        if($request->search){
+            $degrees = Degree::where('name','like','%'.$request->search.'%')->latest('id')->paginate(10);
+            return ApiResponse::success('Success',$degrees);
+        }
+        else{
+            $degrees = Degree::latest('id')->paginate(10);
+            return ApiResponse::success('Success',$degrees);
+        }
+    }
+
+
     /**
      * Show the form for creating a new resource.
      *
@@ -41,7 +53,7 @@ class DegreeController extends Controller
         $degree = new Degree;
         $degree->name = $request->name;
         $degree->fullname = $request->fullname;
-        // $degree->user_id = auth()->user()->id;
+        $degree->user_id = $request->user_id;
         $degree->save();
         return ApiResponse::success('Successful',null);
     }
@@ -65,7 +77,8 @@ class DegreeController extends Controller
      */
     public function edit($id)
     {
-        //
+        $degree = Degree::find($id);
+        return ApiResponse::success('Success',$degree);
     }
 
     /**
@@ -77,7 +90,12 @@ class DegreeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $degree = Degree::find($id);
+        $degree->name = $request->name;
+        $degree->fullname = $request->fullname;
+        $degree->user_id = $request->user_id;
+        $degree->save();
+        return ApiResponse::success('Edit Successfully',null);
     }
 
     /**
@@ -88,6 +106,7 @@ class DegreeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Degree::where('id',$id)->delete();
+        return ApiResponse::success('successful',null);
     }
 }

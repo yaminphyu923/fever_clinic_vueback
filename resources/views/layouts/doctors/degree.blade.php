@@ -3,5 +3,5 @@
 @section('title','Degree')
 
 @section('content')
-    <degree-component></degree-component>
+    <degree-component :auth_id={{$auth_id}}></degree-component>
 @endsection

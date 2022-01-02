@@ -22,5 +22,14 @@
         "vue": "^2.6.12",
         "vue-loader": "^15.9.8",
         "vue-template-compiler": "^2.6.12"
+    },
+    "dependencies": {
+        "jquery": "^3.6.0",
+        "laravel-vue-pagination": "^2.3.1",
+        "moment": "^2.29.1",
+        "sweetalert2": "^11.3.0",
+        "v-select2-component": "^0.4.7",
+        "vue-js-modal": "^2.0.1",
+        "vue-select2": "^0.2.6"
     }
 }

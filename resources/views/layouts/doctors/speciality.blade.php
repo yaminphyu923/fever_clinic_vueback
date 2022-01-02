@@ -3,5 +3,5 @@
 @section('title','Speciality')
 
 @section('content')
-    <speciality-component></speciality-component>
+    <speciality-component :auth_id={{$auth_id}}></speciality-component>
 @endsection

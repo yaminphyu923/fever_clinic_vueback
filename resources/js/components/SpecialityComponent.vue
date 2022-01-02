@@ -26,7 +26,7 @@
                                         <label for="" class="col-sm-4"><b>Speciality Name:</b></label>
 
                                         <div class="col-sm-8">
-                                            <input type="text" name="name" v-model="specialities.name" class="form-control" id="name">
+                                            <input type="text" name="name" v-model="specialities.name" class="form-control" id="name" autocomplete="off">
                                         </div>
                                     </div>
 
@@ -34,7 +34,7 @@
                                         <label for="" class="col-sm-4"><b>Code:</b></label>
 
                                         <div class="col-sm-8">
-                                            <input type="text" name="code" v-model="specialities.code" class="form-control" id="code">
+                                            <input type="text" name="code" v-model="specialities.code" class="form-control" id="code" autocomplete="off">
                                         </div>
                                     </div>
 
@@ -49,8 +49,21 @@
             </div>
 
             <div class="col-md-12 mt-3">
+                <div class="row">
+                    <div class="col-sm-3 offset-sm-9 mb-3">
+                        <form @submit.prevent="index">
+                            <div class="input-group">
+                                <input type="text" v-model="search" placeholder="Search..." class="form-control">
+
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-sm btn-primary">🔎</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
                 <div class="table-responsive">
-                    <table class="datatable table table-bordered table-hover">
+                    <table class="table table-bordered table-hover">
                         <thead>
                             <tr>
                                 <th>No.</th>
@@ -61,19 +74,21 @@
                         </thead>
 
                         <tbody>
-                            <tr v-for="(allspeciality,index) in allspecialities" :key="allspeciality.id">
+                            <tr v-for="(allspeciality,index) in allspecialities.data" :key="allspeciality.id">
                                 <td>{{index+1}}</td>
                                 <td>{{allspeciality.name}}</td>
                                 <td>{{allspeciality.code}}</td>
                                 <td>
-                                    <a href=""><button class="btn btn-sm btn-warning">Edit</button></a>
+                                    <a :href="'/specialities/' + allspeciality.id"><button class="btn btn-sm btn-warning">Edit</button></a>
 
-                                    <a href=""><button class="btn btn-sm btn-danger">Delete</button></a>
+                                    <button class="btn btn-sm btn-danger" @click="destroy(allspeciality.id)">Delete</button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
+
+                <pagination :data="allspecialities" @pagination-change-page="index"></pagination>
             </div>
         </div>
     </div>
@@ -83,29 +98,59 @@
     export default {
         name: 'SpecialityComponent',
 
+        props: ['auth_id'],
+
         data(){
             return {
-                allspecialities : "hello",
+                allspecialities : {},
                 specialities:{
                     name: "",
                     code: "",
-                }
+                    user: "",
+                },
+                search: "",
             }
         },
 
         methods: {
-            index(){
-                axios.get('/api/specialities')
+            index(page=1){
+                axios.get(`/api/specialities_paginate?page=${page}&search=${this.search}`)
                 .then(response => {
                     // console.log(response);
                     this.allspecialities = response.data.info;
                 })
             },
             store(){
+                this.specialities.user_id = this.auth_id;
                 axios.post('/api/createSpecialities',this.specialities)
-                    .then(response => {
-                        this.index();
+                .then(response => {
+                    this.index();
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Creating successfully'
                     })
+                     window.location.reload();
+                })
+            },
+            destroy(id){
+                Swal.fire({
+                title: 'Are you sure?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Delete'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        axios.delete(`/api/specialities/${id}`)
+                        .then(response => {
+                            this.index();
+                            Swal.fire({ title: 'Deleted!',icon: 'success', })
+                        })
+                    }
+
+                    window.location.reload();
+                })
             }
         },
 

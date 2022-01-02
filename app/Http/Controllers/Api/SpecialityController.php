@@ -20,6 +20,17 @@ class SpecialityController extends Controller
         return ApiResponse::success('Success',$specialities);
     }
 
+    public function specialityPaginate(Request $request){
+        if($request->search){
+            $specialities = Speciality::where('name','like','%'.$request->search.'%')->latest('id')->paginate(10);
+            return ApiResponse::success('Success',$specialities);
+        }
+        else{
+            $specialities = Speciality::latest('id')->paginate(10);
+            return ApiResponse::success('Success',$specialities);
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -41,7 +52,7 @@ class SpecialityController extends Controller
         $speciality = new Speciality;
         $speciality->name = $request->name;
         $speciality->code = $request->code;
-        // $speciality->user_id = auth()->user()->id;
+        $speciality->user_id = $request->user_id;
         $speciality->save();
         return ApiResponse::success('Successful',null);
     }
@@ -65,7 +76,8 @@ class SpecialityController extends Controller
      */
     public function edit($id)
     {
-        //
+        $speciality = Speciality::find($id);
+        return ApiResponse::success('Success',$speciality);
     }
 
     /**
@@ -77,7 +89,12 @@ class SpecialityController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $speciality = Speciality::find($id);
+        $speciality->name = $request->name;
+        $speciality->code = $request->code;
+        $speciality->user_id = $request->user_id;
+        $speciality->save();
+        return ApiResponse::success('Successful',null);
     }
 
     /**
@@ -88,6 +105,7 @@ class SpecialityController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Speciality::where('id',$id)->delete();
+        return ApiResponse::success('success',null);
     }
 }

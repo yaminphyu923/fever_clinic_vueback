@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Doctor;
+use App\Models\Speciality;
 use App\Helpers\ApiResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class DoctorController extends Controller
 {
@@ -16,10 +18,24 @@ class DoctorController extends Controller
      */
     public function index()
     {
-        $doctors = Doctor::latest('id')->get();
-        // $specialities = Speciality::latest('id')->get();
-        // $degrees = Degree::latest('id')->get();
+        $doctors = Doctor::with('degree')->with('speciality')->latest('id')->get();
         return ApiResponse::success('Successful',$doctors);
+    }
+
+    public function doctorData(){
+        $doctors = Doctor::select('id','name as text')->get()->toArray();
+        return response()->json($doctors);
+    }
+
+    public function doctorPaginate(Request $request){
+        if($request->search){
+            $doctors = Doctor::where('name','like','%'.$request->search.'%')->latest('id')->paginate(10);
+            return ApiResponse::success('Success',$doctors);
+        }
+        else{
+            $doctors = Doctor::with('degree')->with('speciality')->latest('id')->paginate(10);
+            return ApiResponse::success('Success',$doctors);
+        }
     }
 
     /**
@@ -43,9 +59,9 @@ class DoctorController extends Controller
         $doctor = new Doctor;
         $doctor->name = $request->name;
         $doctor->phone = $request->phone;
-        $doctor->degree = $request->degree;
-        $doctor->speciality = $request->speciality;
-        // $doctor->user_id = auth()->user()->id;
+        $doctor->degree_id = $request->degree_id;
+        $doctor->speciality_id = $request->speciality_id;
+        $doctor->user_id = $request->user_id;
         $doctor->save();
         return ApiResponse::success('Successful',null);
     }
@@ -69,7 +85,8 @@ class DoctorController extends Controller
      */
     public function edit($id)
     {
-        //
+        $doctor = Doctor::find($id);
+        return ApiResponse::success('success',$doctor);
     }
 
     /**
@@ -81,7 +98,14 @@ class DoctorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $doctor = Doctor::find($id);
+        $doctor->name = $request->name;
+        $doctor->phone = $request->phone;
+        $doctor->degree_id = $request->degree_id;
+        $doctor->speciality_id = $request->speciality_id;
+        $doctor->user_id = $request->user_id;
+        $doctor->save();
+        return ApiResponse::success('Success',null);
     }
 
     /**
@@ -92,6 +116,7 @@ class DoctorController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Doctor::where('id',$id)->delete();
+        return ApiResponse::success('success',null);
     }
 }
