@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\HRManagementController;
 use App\Http\Controllers\Api\RefillMedicalController;
 use App\Http\Controllers\Api\OutMedicalListController;
 use App\Http\Controllers\Api\MedicalCategoryController;
+use App\Http\Controllers\Api\PrescriptiveMedicineController;
 
 /*
 |--------------------------------------------------------------------------
@@ -122,3 +123,7 @@ Route::get('lab_categories_paginate',[LabCategoryController::class, 'labCategory
 Route::apiResource('groups',GroupController::class);
 
 Route::get('groups_paginate',[GroupController::class, 'groupPaginate']);
+
+Route::apiResource('pre_medicines',PrescriptiveMedicineController::class);
+
+Route::get('pre_medicines_paginate',[PrescriptiveMedicineController::class,'prescriptiveMedicinePaginate']);

@@ -4,6 +4,7 @@
             <div class="col-md-12">
                 <h4><b>Medical List</b></h4>
                 <a href="/"><button class="btn btn-md btn-danger float-right">Home</button></a>
+                <a href="/pre_medicine"><button class="btn btn-md btn-primary float-right mr-1">Prescriptive Medicine</button></a>
                 <a href="/medical/category"><button class="btn btn-md btn-primary float-right mr-1">Category</button></a>
                 <button class="btn btn-md btn-primary float-right mr-1" data-toggle="modal" data-target="#addMedical">Add Medical List</button>
             </div>

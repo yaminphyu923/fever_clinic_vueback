@@ -136,4 +136,9 @@ class HomeController extends Controller
         $auth_id = auth()->user()->id;
         return view('layouts.labs.edit_lab_category',compact('auth_id'));
     }
+
+    public function prescriptiveMedicine(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.medical_lists.prescriptive_medicine',compact('auth_id'));
+    }
 }

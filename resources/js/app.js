@@ -83,6 +83,8 @@ Vue.component('editgroup-component', require('./components/EditGroupComponent.vu
 
 Vue.component('editlabcategory-component', require('./components/EditLabCategoryComponent.vue').default);
 
+Vue.component('prescriptivemedicine-component', require('./components/PrescriptiveMedicineComponent.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

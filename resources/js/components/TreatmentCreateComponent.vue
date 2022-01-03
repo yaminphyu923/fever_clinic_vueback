@@ -97,8 +97,8 @@
 
                                             <div class="tab-content">
                                                 <div class="tab-pane active" id="preLine">
-                                                    <div class="row">
-                                                        <div class="col-sm-6" v-for="(input,index) in inputs" :key="index">
+                                                    <div class="row" v-for="(input,index) in inputs" :key="index">
+                                                        <div class="col-sm-6">
                                                             <div class="form-group row">
                                                                 <label for="drug0" class="col-sm-4"><b>Drug</b></label>
                                                                 <div class="col-sm-7 se">
@@ -111,52 +111,54 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-sm-6" v-for="dose in doses" :key="dose.id">
+                                                        <!--  v-for="(input,index) in inputs" :key="index" -->
+
+                                                        <div class="col-sm-6">
                                                             <div class="form-group row">
                                                                 <label for="" class="col-sm-4"><b>Dose:</b></label>
 
                                                                 <div class="col-sm-7">
-                                                                    <input type="text" name="dose" v-model="dose.value" class="form-control" :id="dose.id">
+                                                                    <input type="text" name="dose" v-model="input.value1" class="form-control" :id="input.id1">
                                                                 </div>
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-sm-6" v-for="fre in frequency" :key="fre.id">
+                                                        <div class="col-sm-6">
                                                             <div class="form-group row">
                                                                 <label for="" class="col-sm-4"><b>Frequency:</b></label>
 
                                                                 <div class="col-sm-7">
-                                                                    <input type="text" name="frequency" v-model="fre.value" class="form-control" :id="fre.id">
+                                                                    <input type="text" name="frequency" v-model="input.value2" class="form-control" :id="input.id2">
                                                                 </div>
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-sm-6" v-for="start in startDates" :key="start.id">
+                                                        <div class="col-sm-6">
                                                             <div class="form-group row">
                                                                 <label for="" class="col-sm-4"><b>Starting Date:</b></label>
 
                                                                 <div class="col-sm-7">
-                                                                    <input type="datetime-local" name="start_date" v-model="start.value" class="form-control" :id="start.id">
+                                                                    <input type="datetime-local" name="start_date" v-model="input.value3" class="form-control" :id="input.id3">
                                                                 </div>
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-sm-6" v-for="end in endDates" :key="end.id">
+                                                        <div class="col-sm-6">
                                                             <div class="form-group row">
                                                                 <label for="" class="col-sm-4"><b>Ending Date:</b></label>
 
                                                                 <div class="col-sm-7">
-                                                                    <input type="datetime-local" name="end_date" v-model="end.value" class="form-control" :id="end.id">
+                                                                    <input type="datetime-local" name="end_date" v-model="input.value4" class="form-control" :id="input.id4">
                                                                 </div>
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-sm-6" v-for="remark in remarks" :key="remark.id">
+                                                        <div class="col-sm-6">
                                                             <div class="form-group row">
                                                                 <label for="" class="col-sm-4"><b>Remark</b></label>
 
                                                                 <div class="col-sm-7">
-                                                                    <textarea name="remark" :id="remark.id" v-model="remark.value" cols="30" rows="2" class="form-control"></textarea>
+                                                                    <textarea name="remark" :id="input.id5" v-model="input.value5" cols="30" rows="2" class="form-control"></textarea>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -209,7 +211,7 @@
 
         data(){
             return {
-                treatments: [{
+                treatments: {
                     patient_id: "",
                     note: "",
                     doctor_id: "",
@@ -223,7 +225,7 @@
                     end_date: [],
                     remark: [],
                     user_id: "",
-                }],
+                },
                 patients: [],
 
                 doctors: [],
@@ -236,37 +238,57 @@
                     id: 'drug0',
                     label: 'Drug',
                     value: '',
+
+                    id1: 'dose0',
+                    label1: 'Dose',
+                    value1: '',
+
+                    id2: 'frequency0',
+                    label2: 'Frequency',
+                    value2: '',
+
+                    id3: 'start0',
+                    label3: 'Start Date',
+                    value3: '',
+
+                    id4: 'end0',
+                    label4: 'End Date',
+                    value4: '',
+
+                    id5: 'remark0',
+                    label5: 'Remark',
+                    value5: '',
                 }],
 
-                doses: [{
-                    id: 'dose0',
-                    label: 'Dose',
-                    value: '',
-                }],
+                // doses: [{
+                //     id: 'dose0',
+                //     label: 'Dose',
+                //     value: '',
+                // }],
 
-                frequency: [{
-                    id: 'frequency0',
-                    label: 'Frequency',
-                    value: '',
-                }],
+                // frequency: [{
+                //     id: 'frequency0',
+                //     label: 'Frequency',
+                //     value: '',
+                // }],
 
-                startDates: [{
-                    id: 'start0',
-                    label: 'Start Date',
-                    value: '',
-                }],
+                // startDates: [{
+                //     id: 'start0',
+                //     label: 'Start Date',
+                //     value: '',
+                // }],
 
-                endDates: [{
-                    id: 'end0',
-                    label: 'End Date',
-                    value: '',
-                }],
+                // endDates: [{
+                //     id: 'end0',
+                //     label: 'End Date',
+                //     value: '',
+                // }],
 
-                remarks: [{
-                    id: 'remark0',
-                    label: 'Remark',
-                    value: '',
-                }]
+                // remarks: [{
+                //     id: 'remark0',
+                //     label: 'Remark',
+                //     value: '',
+                // }]
             }
         },
         methods: {
@@ -297,37 +319,57 @@
                     id: `drug${++this.counter}`,
                     label: 'Drug',
                     value: '',
+
+                    id1: `dose${++this.counter}`,
+                    label1: 'Dose',
+                    value1: '',
+
+                    id2: `frequency${++this.counter}`,
+                    label2: 'Frequency',
+                    value2: '',
+
+                    id3: `start${++this.counter}`,
+                    label3: 'Start Date',
+                    value3: '',
+
+                    id4: `end${++this.counter}`,
+                    label4: 'End Date',
+                    value4: '',
+
+                    id5: `remark${++this.counter}`,
+                    label5: 'Remark',
+                    value5: '',
                 });
 
-                this.doses.push({
-                    id: `dose${++this.counter}`,
-                    label: 'Dose',
-                    value: '',
-                });
+                // this.doses.push({
+                //     id: `dose${++this.counter}`,
+                //     label: 'Dose',
+                //     value: '',
+                // });
 
-                this.frequency.push({
-                    id: `frequency${++this.counter}`,
-                    label: 'Frequency',
-                    value: '',
-                }),
+                // this.frequency.push({
+                //     id: `frequency${++this.counter}`,
+                //     label: 'Frequency',
+                //     value: '',
+                // }),
 
-                this.startDates.push({
-                    id: `start${++this.counter}`,
-                    label: 'Start Date',
-                    value: '',
-                }),
+                // this.startDates.push({
+                //     id: `start${++this.counter}`,
+                //     label: 'Start Date',
+                //     value: '',
+                // }),
 
-                this.endDates.push({
-                    id: `end${++this.counter}`,
-                    label: 'End Date',
-                    value: '',
-                }),
+                // this.endDates.push({
+                //     id: `end${++this.counter}`,
+                //     label: 'End Date',
+                //     value: '',
+                // }),
 
-                this.remarks.push({
-                    id: `remark${++this.counter}`,
-                    label: 'Remark',
-                    value: '',
-                })
+                // this.remarks.push({
+                //     id: `remark${++this.counter}`,
+                //     label: 'Remark',
+                //     value: '',
+                // })
 
                 // this.addings += 1;
                 // this.treatments.medical_list_id.put({ value: '' });
@@ -335,24 +377,43 @@
             },
 
             minus(){
-                this.counter -= 1;
-                // console.log(this.addings);
+                this.inputs.pop({
+                    id: `drug${--this.counter}`,
+                    label: 'Drug',
+                    value: '',
+
+                    id1: `dose${--this.counter}`,
+                    label1: 'Dose',
+                    value1: '',
+
+                    id2: `frequency${--this.counter}`,
+                    label2: 'Frequency',
+                    value2: '',
+
+                    id3: `start${--this.counter}`,
+                    label3: 'Start Date',
+                    value3: '',
+
+                    id4: `end${--this.counter}`,
+                    label4: 'End Date',
+                    value4: '',
+
+                    id5: `remark${--this.counter}`,
+                    label5: 'Remark',
+                    value5: '',
+                })
             },
 
             store(){
-                this.treatments.medical_list_id = this.inputs.value;
-                this.treatments.dose = this.doses.value;
-                this.treatments.frequency = this.frequency.value;
-                this.treatments.start_date = this.startDates.value;
-                this.treatments.end_date = this.endDates.value;
-                this.treatments.remark = this.remarks.value;
+                this.inputs.forEach(item =>{
+                    this.treatments.medical_list_id.push(item.value);
+                    this.treatments.dose.push(item.value1);
+                    this.treatments.frequency.push(item.value2);
+                    this.treatments.start_date.push(item.value3);
+                    this.treatments.end_date.push(item.value4);
+                    this.treatments.remark.push(item.value5);
+                });
                 this.treatments.user_id = this.auth_id;
-
-                // let formData = new FormData();
-
-                // formData.append('medical_list_id', this.inputs.value);
-
-                // console.log(this.inputs.value);
 
                 axios.post('/api/treatments',this.treatments)
                 .then(response => {

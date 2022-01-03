@@ -25,9 +25,9 @@ class OutMedicalListController extends Controller
 
     public function outMedicalPaginate(Request $request)
     {
-        if($request->outSearch){
+        if($request->search){
             $out_medicals = OutMedical::with('user')->with('doctor')->with('medicalList')
-                                        ->whereDate('out_date',$request->outSearch)
+                                        ->whereDate('out_date',$request->search)
                                         ->latest('id')->paginate(10);
             return ApiResponse::success('Success',$out_medicals);
         }

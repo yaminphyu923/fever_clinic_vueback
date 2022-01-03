@@ -22,8 +22,16 @@ class MedicalListController extends Controller
 
     public function medicalListPaginate(Request $request){
         if($request->search){
-            $medical_lists = MedicalList::with('medicalcategory')->where('name','like','%'.$request->search.'%')
-                                        ->latest('id')->paginate(10);
+            // $medical_lists = MedicalList::with('medicalcategory')->where('name','like','%'.$request->search.'%')
+            //                             ->latest('id')->paginate(10);
+
+            $medical_lists = MedicalList::with('medicalcategory')
+                            ->join('medical_categories as category','category.id','=','medical_lists.medical_category_id')
+                            ->where('category.name','like','%'.$request->search.'%')
+                            ->orwhere('medical_lists.name','like','%'.$request->search.'%')
+                            ->orwhere('medical_lists.in_date','like','%'.$request->search.'%')
+                            ->select('medical_lists.*')
+                            ->latest('medical_lists.id')->paginate(10);
             return ApiResponse::success('Success',$medical_lists);
         }
         else{

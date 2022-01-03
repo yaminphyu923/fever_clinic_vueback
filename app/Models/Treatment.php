@@ -12,7 +12,7 @@ class Treatment extends Model
 {
     use HasFactory;
 
-    protected $table="hospitals";
+    protected $table="treatments";
     protected $fillable = [
         "patient_id",
         "note",

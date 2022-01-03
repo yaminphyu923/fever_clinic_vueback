@@ -68,3 +68,5 @@ Route::get('/group/{id}', [HomeController::class, 'editGroup']);
 
 Route::get('/lab_category/{id}', [HomeController::class, 'editLabCategory']);
 
+Route::get('/pre_medicine',[HomeController::class, 'prescriptiveMedicine']);
+

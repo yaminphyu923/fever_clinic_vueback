@@ -303,12 +303,12 @@
                     // console.log(this.doctors);
                 })
             },
-
             index(page=1){
+                console.log(this.outSearch);
                 axios.get(`/api/out_medical_paginate?page=${page}&search=${this.outSearch}`)
                 .then(response => {
                     this.outMedicals = response.data.info;
-                    // console.log(this.outMedicals);
+                    console.log(this.outMedicals);
                 })
             },
 

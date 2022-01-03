@@ -24,9 +24,9 @@ class RefillMedicalController extends Controller
 
     public function refillPaginate(Request $request)
     {
-        if($request->refillSearch){
+        if($request->search){
             $refills = RefillMedical::with('user')->with('doctor')->with('medicalList')
-                                        ->whereDate('refill_date',$request->refillSearch)
+                                        ->whereDate('refill_date',$request->search)
                                         ->latest('id')->paginate(10);
             return ApiResponse::success('Success',$refills);
         }
