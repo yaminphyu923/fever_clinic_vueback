@@ -37,6 +37,8 @@
     export default {
         name: 'EditPositionComponent',
 
+        props: ['auth_id'],
+
         data(){
             return {
                 id : "",
@@ -58,6 +60,7 @@
             },
 
             update(){
+                this.positions.user_id = this.auth_id;
                 axios.put(`/api/positions/${this.id}`,this.positions)
                 .then(response => {
                     this.edit();

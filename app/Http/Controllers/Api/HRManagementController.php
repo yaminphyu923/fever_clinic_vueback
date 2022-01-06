@@ -20,6 +20,22 @@ class HRManagementController extends Controller
         return ApiResponse::success('Success',$hrs);
     }
 
+    public function hrPaginate(Request $request){
+        if($request->search){
+            $hrs = HRManagement::with('position')
+                    ->join('positions as position','position.id','=','h_r_management.position_id')
+                    ->where('position.name','like','%'.$request->search.'%')
+                    ->orwhere('h_r_management.name','like','%'.$request->search.'%')
+                    ->select('h_r_management.*')
+                    ->latest('h_r_management.id')->paginate(10);
+            return ApiResponse::success('Success',$hrs);
+        }
+        else{
+            $hrs = HRManagement::with('position')->latest('id')->paginate(10);
+            return ApiResponse::success('Success',$hrs);
+        }
+    }
+
     /**
      * Store a newly created resource in storage.
      *

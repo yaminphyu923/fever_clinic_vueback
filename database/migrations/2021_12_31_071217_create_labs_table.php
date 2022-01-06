@@ -19,7 +19,7 @@ class CreateLabsTable extends Migration
             $table->text('unit')->nullable();
             $table->text('range')->nullable();
             $table->text('group_id')->nullable();
-            $table->text('lab_category_id')->nullable();
+            $table->text('labcategory_id')->nullable();
             $table->text('user_id')->nullable();
             $table->timestamps();
         });

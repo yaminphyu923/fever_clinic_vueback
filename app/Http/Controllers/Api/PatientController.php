@@ -21,7 +21,7 @@ class PatientController extends Controller
     }
 
     public function patientData(){
-        $patients = Patient::select('id','name as text')->get()->toArray();
+        $patients = Patient::select('id','nrc as text')->get()->toArray();
         return response()->json($patients);
     }
 

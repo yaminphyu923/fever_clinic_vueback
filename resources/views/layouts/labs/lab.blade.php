@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title','Medical List')
+@section('title','Lab')
 
 @section('content')
     <lab-component :auth_id={{$auth_id}}></lab-component>

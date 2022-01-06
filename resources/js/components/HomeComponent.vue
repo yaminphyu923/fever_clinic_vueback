@@ -9,6 +9,7 @@
                 <a href="/patient-create"><button class="btn btn-sm btn-primary"><b>Create</b></button></a>
                 <a href="/doctors"><button class="btn btn-sm btn-primary"><b>Doctors</b></button></a>
                 <!-- <a href="/hrmanagements"><button class="btn btn-sm btn-primary"><b>HR Management</b></button></a> -->
+                <!-- <a href="/disease"><button class="btn btn-sm btn-primary"><b>Disease</b></button></a> -->
                 <a href="/medical"><button class="btn btn-sm btn-primary"><b>Medical List</b></button></a>
                 <a href="/lab"><button class="btn btn-sm btn-primary"><b>Lab</b></button></a>
             </div>

@@ -2,9 +2,11 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\LabController;
 use App\Http\Controllers\Api\GroupController;
 use App\Http\Controllers\Api\DegreeController;
 use App\Http\Controllers\Api\DoctorController;
+use App\Http\Controllers\Api\DiseaseController;
 use App\Http\Controllers\Api\ImagingController;
 use App\Http\Controllers\Api\PatientController;
 use App\Http\Controllers\Api\HospitalController;
@@ -78,9 +80,13 @@ Route::get('patients_paginate',[PatientController::class, 'patientPaginate']);
 
 Route::apiResource('positions',PositionController::class);
 
+Route::get('position_paginate',[PositionController::class,'positionPaginate']);
+
 Route::get('/positions/edit/{id}',[PositionController::class,'edit']);
 
 Route::apiResource('hrs',HRManagementController::class);
+
+Route::get('hrs_paginate',[HRManagementController::class, 'hrPaginate']);
 
 Route::apiResource('hospitals',HospitalController::class);
 
@@ -112,6 +118,10 @@ Route::get('/doctorData',[DoctorController::class,'doctorData']);
 
 Route::get('/medicalListData',[MedicalListController::class,'medicalListData']);
 
+Route::get('/groupData',[GroupController::class,'groupData']);
+
+Route::get('/labCategoryData',[LabCategoryController::class,'labCategoryData']);
+
 Route::apiResource('labs',LabController::class);
 
 Route::get('labs_paginate',[LabController::class, 'labPaginate']);
@@ -127,3 +137,10 @@ Route::get('groups_paginate',[GroupController::class, 'groupPaginate']);
 Route::apiResource('pre_medicines',PrescriptiveMedicineController::class);
 
 Route::get('pre_medicines_paginate',[PrescriptiveMedicineController::class,'prescriptiveMedicinePaginate']);
+
+Route::apiResource('diseases',DiseaseController::class);
+
+Route::get('diseases_paginate',[DiseaseController::class, 'diseasePaginate']);
+
+Route::get('/diseaseData',[DiseaseController::class,'diseaseData']);
+

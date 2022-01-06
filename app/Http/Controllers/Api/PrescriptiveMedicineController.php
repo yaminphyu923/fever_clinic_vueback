@@ -29,7 +29,7 @@ class PrescriptiveMedicineController extends Controller
         //     return ApiResponse::success('Success',$pres);
         // }
         // else{
-            $pres = PrescriptiveMedicine::with('patient')->with('user')->with('doctor')->with('medicalList')->latest('id')->paginate(1);
+            $pres = PrescriptiveMedicine::with('patient')->with('user')->with('doctor')->with('medicalList')->latest('id')->paginate(10);
             return ApiResponse::success('Successful',$pres);
         // }
     }

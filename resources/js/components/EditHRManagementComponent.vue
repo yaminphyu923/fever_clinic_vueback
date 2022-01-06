@@ -53,7 +53,7 @@
 <script>
     export default {
         name: 'EditHRManagementComponent',
-
+        props: ['auth_id'],
         data(){
             return {
                 id : "",
@@ -85,6 +85,7 @@
             },
 
             update(){
+                this.hrs.user_id = this.auth_id;
                 axios.put(`/api/hrs/${this.id}`,this.hrs)
                 .then(response => {
                     this.edit();

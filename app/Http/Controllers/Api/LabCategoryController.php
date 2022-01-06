@@ -20,6 +20,12 @@ class LabCategoryController extends Controller
         return ApiResponse::success('Success',$lab_categories);
     }
 
+    public function labCategoryData()
+    {
+        $lab_categories = LabCategory::select('id','name as text')->get()->toArray();
+        return response()->json($lab_categories);
+    }
+
     public function labCategoryPaginate(Request $request){
         if($request->search){
             $lab_categories = LabCategory::where('name','like','%'.$request->search.'%')->latest('id')->paginate(10);

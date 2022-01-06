@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Api\LabController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,8 @@ Route::get('/hospital-create', [HomeController::class, 'hospitalCreate']);
 Route::get('/treatment-create', [HomeController::class, 'treatmentCreate']);
 
 Route::get('/imaging-create', [HomeController::class, 'imagingCreate']);
+
+Route::get('/investigation-create', [HomeController::class, 'investigationCreate']);
 
 Route::get('/doctors', [HomeController::class, 'doctor']);
 
@@ -60,6 +63,8 @@ Route::get('/medical/category/{id}', [HomeController::class, 'editMedicalCategor
 
 Route::get('/lab', [HomeController::class, 'lab']);
 
+Route::get('/lab/{id}',[HomeController::class, 'editLab']);
+
 Route::get('/lab_category', [HomeController::class, 'labCategory']);
 
 Route::get('/group', [HomeController::class, 'group']);
@@ -69,4 +74,13 @@ Route::get('/group/{id}', [HomeController::class, 'editGroup']);
 Route::get('/lab_category/{id}', [HomeController::class, 'editLabCategory']);
 
 Route::get('/pre_medicine',[HomeController::class, 'prescriptiveMedicine']);
+
+Route::get('/disease',[HomeController::class, 'disease']);
+
+Route::get('/disease/{id}',[HomeController::class, 'editDisease']);
+
+
+// Excel
+
+Route::get('labs-export', [LabController::class, 'labExport'])->name('lab-export');
 

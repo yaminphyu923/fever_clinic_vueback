@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title','Doctor')
+@section('title','HR Management')
 
 @section('content')
-    <edithrmanagement-component></edithrmanagement-component>
+    <edithrmanagement-component :auth_id={{$auth_id}}></edithrmanagement-component>
 @endsection

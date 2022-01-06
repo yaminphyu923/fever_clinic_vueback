@@ -57,8 +57,21 @@
             </div>
 
             <div class="col-md-12 mt-3">
+                <div class="row">
+                    <div class="col-sm-3 offset-sm-9 mb-3">
+                        <form @submit.prevent="view">
+                            <div class="input-group">
+                                <input type="text" v-model="search" placeholder="Search Name..." class="form-control">
+
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-sm btn-primary">🔎</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
                 <div class="table-responsive">
-                    <table class="datatable table table-bordered table-hover">
+                    <table class="table table-bordered table-hover">
                         <thead>
                             <tr>
                                 <th>No.</th>
@@ -70,7 +83,7 @@
                         </thead>
 
                         <tbody>
-                            <tr v-for="(hr,index) in hrs" :key="hr.id">
+                            <tr v-for="(hr,index) in hrs.data" :key="hr.id">
                                 <td>{{index+1}}</td>
                                 <td>{{hr.name}}</td>
                                 <td>{{hr.phone}}</td>
@@ -84,6 +97,8 @@
                         </tbody>
                     </table>
                 </div>
+
+                 <pagination :data="hrs" @pagination-change-page="view"></pagination>
             </div>
         </div>
     </div>
@@ -93,26 +108,31 @@
     export default {
         name: "HRManagementComponent",
 
+        props: ['auth_id'],
+
         data(){
             return {
                 hrs: {},
 
                 hr : {
-                    id: "",
                     name : "",
                     phone : "",
                     position_id : "",
+                    user_id: "",
                 },
 
                 positions : {},
+
+                search: "",
             }
         },
 
         methods: {
-            view(){
-                axios.get('/api/hrs')
+            view(page=1){
+                axios.get(`/api/hrs_paginate?page=${page}&search=${this.search}`)
                 .then(response => {
                     this.hrs = response.data.info;
+                    // console.log(this.hrs);
                 })
             },
 
@@ -124,6 +144,7 @@
             },
 
             store(){
+                this.hr.user_id = this.auth_id;
                 axios.post('/api/hrs',this.hr)
                 .then(response => {
                     Toast.fire({
@@ -131,6 +152,8 @@
                         title: 'Creating successfully'
                     })
                 })
+
+                window.location.reload();
             },
 
             destroy(id){

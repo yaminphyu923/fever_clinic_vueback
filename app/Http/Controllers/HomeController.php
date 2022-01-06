@@ -77,19 +77,23 @@ class HomeController extends Controller
     }
 
     public function hrmanagement(){
-        return view('layouts.hr_managements.hr_management');
+        $auth_id = auth()->user()->id;
+        return view('layouts.hr_managements.hr_management',compact('auth_id'));
     }
 
     public function edithrmanagement(){
-        return view('layouts.hr_managements.edit_hr_management');
+        $auth_id = auth()->user()->id;
+        return view('layouts.hr_managements.edit_hr_management',compact('auth_id'));
     }
 
     public function position(){
-        return view('layouts.positions.position');
+        $auth_id = auth()->user()->id;
+        return view('layouts.positions.position',compact('auth_id'));
     }
 
     public function editPosition(){
-        return view('layouts.positions.edit_position');
+        $auth_id = auth()->user()->id;
+        return view('layouts.positions.edit_position',compact('auth_id'));
     }
 
     public function medicalList(){
@@ -117,6 +121,11 @@ class HomeController extends Controller
         return view('layouts.labs.lab',compact('auth_id'));
     }
 
+    public function editLab(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.labs.edit_lab',compact('auth_id'));
+    }
+
     public function labCategory(){
         $auth_id = auth()->user()->id;
         return view('layouts.labs.lab_category',compact('auth_id'));
@@ -140,5 +149,20 @@ class HomeController extends Controller
     public function prescriptiveMedicine(){
         $auth_id = auth()->user()->id;
         return view('layouts.medical_lists.prescriptive_medicine',compact('auth_id'));
+    }
+
+    public function investigationCreate(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.investigations.investigation',compact('auth_id'));
+    }
+
+    public function disease(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.diseases.disease',compact('auth_id'));
+    }
+
+    public function editDisease(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.diseases.edit_disease',compact('auth_id'));
     }
 }

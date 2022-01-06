@@ -20,6 +20,11 @@ class GroupController extends Controller
         return ApiResponse::success('Successful',$groups);
     }
 
+    public function groupData(){
+        $groups = Group::select('id','name as text')->get()->toArray();
+        return response()->json($groups);
+    }
+
     public function groupPaginate(Request $request){
         if($request->search){
             $groups = Group::where('name','like','%'.$request->search.'%')->latest('id')->paginate(10);

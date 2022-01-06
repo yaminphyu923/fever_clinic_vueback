@@ -6,7 +6,7 @@
                 <a href="/medical"><button type="button" class="btn btn-sm btn-outline-danger float-right mr-1"><b>Back</b></button></a>
             </div>
 
-            <div class="col-sm-12">
+            <div class="col-sm-12 mt-3">
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover">
                         <thead>
@@ -27,7 +27,7 @@
                                 <td>{{(pre.patient != null)?pre.patient.name:"-"}}</td>
                                 <td>{{(pre.doctor != null)?pre.doctor.name:"-"}}</td>
                                 <!-- {{(pre.medicalList != null)?pre.medicalList.name:"-"}} -->
-                                <td>{{pre.medicalList.name}}</td>
+                                <td>{{(pre.medicalList != null)?pre.medicalList.name:"-"}}</td>
                                 <td>
                                     <button type="button" class="btn btn-sm btn-primary">Out</button>
                                 </td>

@@ -7,7 +7,8 @@
                 <button class="btn btn-md btn-primary" data-toggle="modal" data-target="#addLab">Add Lab</button>
                 <a href="/lab_category"><button class="btn btn-md btn-primary">Lab Category</button></a>
                 <a href="/group"><button class="btn btn-md btn-primary">Group</button></a>
-
+                <a href="/labs-export"><button class="btn btn-md btn-primary">Export Excel</button></a>
+                <button class="btn btn-md btn-primary" data-toggle="modal" data-target="#addExcel">Import Excel</button>
             </div>
 
             <div class="col-md-12">
@@ -50,16 +51,47 @@
                                     <div class="form-group row">
                                         <label for="" class="col-sm-4"><b>Group:</b></label>
 
-                                        <div class="col-sm-8">
-
+                                        <div class="col-sm-8 se">
+                                            <Select2 v-model="labs.group_id" :options="groups" :settings="{ settingOption: groups.text, settingOption: groups.text }" />
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
                                         <label for="" class="col-sm-4"><b>Lab Category:</b></label>
 
-                                        <div class="col-sm-8">
+                                        <div class="col-sm-8 se">
+                                            <Select2 v-model="labs.labcategory_id" :options="lab_categories" :settings="{ settingOption: lab_categories.text, settingOption: lab_categories.text }" />
+                                        </div>
+                                    </div>
 
+                                    <button type="submit" class="btn btn-success float-right ml-1">Save</button>
+                                    <button type="button" class="btn btn-secondary float-right" data-dismiss="modal">Close</button>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="modal fade" name="addExcel" id="addExcel" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Adding Lab Excel File</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form @submit.prevent="">
+
+                                    <div class="form-group row">
+                                        <label for="" class="col-sm-4"><b>Lab Excel File:</b></label>
+
+                                        <div class="col-sm-8">
+                                            <input type="file" name="lab_file" class="form-control" id="lab_file" autocomplete="off">
                                         </div>
                                     </div>
 
@@ -76,7 +108,7 @@
             <div class="col-md-12 mt-3">
                 <div class="row">
                     <div class="col-sm-3 offset-sm-9 mb-3">
-                        <form @submit.prevent="">
+                        <form @submit.prevent="index">
                             <div class="input-group">
                                 <input type="text" v-model="search" placeholder="Search Name..." class="form-control">
 
@@ -102,23 +134,24 @@
                         </thead>
 
                         <tbody>
-                            <!-- <tr v-for="(alldoctor,index) in alldoctors.data" :key="alldoctor.id">
+                            <tr v-for="(all_lab,index) in all_labs.data" :key="all_lab.id">
                                 <td>{{index+1}}</td>
-                                <td>{{alldoctor.name}}</td>
-                                <td>{{alldoctor.phone}}</td>
-                                <td>{{(alldoctor.degree != null)?alldoctor.degree.name:'-'}}</td>
-                                <td>{{(alldoctor.speciality != null)?alldoctor.speciality.name:'-'}}</td>
+                                <td>{{all_lab.name}}</td>
+                                <td>{{all_lab.unit}}</td>
+                                <td>{{all_lab.range}}</td>
+                                <td>{{(all_lab.group != null)?all_lab.group.name:'-'}}</td>
+                                <td>{{(all_lab.labCategory != null)?all_lab.labCategory.name:'-'}}</td>
                                 <td>
-                                    <a :href="'/doctors/'+alldoctor.id"><button class="btn btn-sm btn-warning">Edit</button></a>
+                                    <a :href="'/lab/'+all_lab.id"><button class="btn btn-sm btn-warning">Edit</button></a>
 
-                                    <button class="btn btn-sm btn-danger" @click="destroy(alldoctor.id)">Delete</button>
+                                    <button class="btn btn-sm btn-danger" @click="destroy(all_lab.id)">Delete</button>
                                 </td>
-                            </tr> -->
+                            </tr>
                         </tbody>
                     </table>
                 </div>
 
-                <!-- <pagination :data="alldoctors" @pagination-change-page="doctor"></pagination> -->
+                <pagination :data="all_labs" @pagination-change-page="index"></pagination>
             </div>
         </div>
     </div>
@@ -126,22 +159,29 @@
 
 <script>
 
-    import VModal from 'vue-js-modal';
+    import Select2 from 'v-select2-component';
 
     export default {
         name: 'LabComponent',
 
         props: ['auth_id'],
 
+        components: {Select2},
         data(){
             return {
+
+                groups: [],
+
+                lab_categories: [],
+
+                all_labs: {},
 
                 labs:{
                     name: "",
                     unit: "",
                     range: "",
                     group_id: "",
-                    lab_category_id: "",
+                    labcategory_id: "",
                     user_id: "",
                 },
 
@@ -151,32 +191,33 @@
         },
 
         methods:{
-            index(){
-                // axios.get('/api/degrees')
-                // .then(response => {
-                //     this.degrees = response.data.info;
-                // }),
-
-                // axios.get('/api/specialities')
-                // .then(response => {
-                //     this.specialities = response.data.info;
-                // })
+            index(page=1){
+                axios.get(`/api/labs_paginate?page=${page}&search=${this.search}`)
+                .then(response => {
+                    this.all_labs = response.data.info;
+                    console.log(this.all_labs);
+                })
             },
 
-            // doctor(page=1){
-            //     axios.get(`/api/doctors_paginate?page=${page}&search=${this.search}`)
-            //     .then(response => {
-            //         this.alldoctors = response.data.info;
-            //     })
-            // },
+            group(){
+                axios.get('/api/groupData')
+                .then(response => {
+                    this.groups = response.data;
+                })
+            },
+
+            labCategory(){
+                axios.get('/api/labCategoryData')
+                .then(response =>{
+                    this.lab_categories = response.data;
+                })
+            },
 
             store(){
 
                 this.labs.user_id = this.auth_id;
                 axios.post('/api/labs',this.labs)
                 .then(response => {
-                    this.index();
-
                     Toast.fire({
                         icon: 'success',
                         title: 'Creating successfully'
@@ -185,29 +226,30 @@
                      window.location.reload();
                 })
             },
-            // destroy(id){
-            //     Swal.fire({
-            //     title: 'Are you sure?',
-            //     icon: 'warning',
-            //     showCancelButton: true,
-            //     confirmButtonColor: '#3085d6',
-            //     cancelButtonColor: '#d33',
-            //     confirmButtonText: 'Delete'
-            //     }).then((result) => {
-            //         if (result.isConfirmed) {
-            //             axios.delete(`/api/doctors/${id}`)
-            //             .then(response => {
-            //                 this.index();
-            //                 Swal.fire({ title: 'Deleted!',icon: 'success', })
-            //             })
-            //         }
-            //         window.location.reload();
-            //     })
-            // }
+            destroy(id){
+                Swal.fire({
+                title: 'Are you sure?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Delete'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        axios.delete(`/api/labs/${id}`)
+                        .then(response => {
+                            Swal.fire({ title: 'Deleted!',icon: 'success', })
+                        })
+                    }
+                    window.location.reload();
+                })
+            }
         },
 
         created(){
-
+            this.group();
+            this.labCategory();
+            this.index();
         }
     }
 </script>

@@ -20,6 +20,17 @@ class PositionController extends Controller
         return ApiResponse::success('Success',$positions);
     }
 
+    public function positionPaginate(Request $request){
+        if($request->search){
+            $positions = Position::where('name','like','%'.$request->search.'%')->latest('id')->paginate(10);
+            return ApiResponse::success('Success',$positions);
+        }
+        else{
+            $positions = Position::latest('id')->paginate(10);
+            return ApiResponse::success('Success',$positions);
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      *

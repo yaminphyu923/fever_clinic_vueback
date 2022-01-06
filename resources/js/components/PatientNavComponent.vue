@@ -4,6 +4,7 @@
             <div class="col-md-12 patientnav">
                 <a href="/hospital-create" class="mr-4" :class="activeClass('hospital-create')"><b>Hospital</b></a>
                 <a href="/imaging-create" class="mr-4" :class="activeClass('imaging-create')"><b>Imaging</b></a>
+                <a href="/investigation-create" class="mr-4" :class="activeClass('investigation-create')"><b>Investigation</b></a>
                 <a href="/treatment-create" class="mr-4" :class="activeClass('treatment-create')"><b>Treatment</b></a>
             </div>
         </div>

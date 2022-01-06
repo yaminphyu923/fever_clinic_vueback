@@ -43,6 +43,8 @@ Vue.component('treatment-create-component', require('./components/TreatmentCreat
 
 Vue.component('imaging-create-component', require('./components/ImagingCreateComponent.vue').default);
 
+Vue.component('investigation-create-component', require('./components/InvestigationCreateComponent.vue').default);
+
 Vue.component('doctor-component', require('./components/DoctorComponent.vue').default);
 
 Vue.component('editdoctor-component', require('./components/EditDoctorComponent.vue').default);
@@ -75,6 +77,8 @@ Vue.component('detailmedicallist-component', require('./components/DetailMedical
 
 Vue.component('lab-component', require('./components/LabComponent.vue').default);
 
+Vue.component('editlab-component', require('./components/EditLabComponent.vue').default);
+
 Vue.component('labcategory-component', require('./components/LabCategoryComponent.vue').default);
 
 Vue.component('group-component', require('./components/GroupComponent.vue').default);
@@ -84,6 +88,12 @@ Vue.component('editgroup-component', require('./components/EditGroupComponent.vu
 Vue.component('editlabcategory-component', require('./components/EditLabCategoryComponent.vue').default);
 
 Vue.component('prescriptivemedicine-component', require('./components/PrescriptiveMedicineComponent.vue').default);
+
+Vue.component('disease-component', require('./components/DiseaseComponent.vue').default);
+
+Vue.component('editdisease-component', require('./components/EditDiseaseComponent.vue').default);
+
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

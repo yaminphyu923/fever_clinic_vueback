@@ -43,8 +43,21 @@
             </div>
 
             <div class="col-md-12 mt-3">
+                <div class="row">
+                    <div class="col-sm-3 offset-sm-9 mb-3">
+                        <form @submit.prevent="view">
+                            <div class="input-group">
+                                <input type="text" v-model="search" placeholder="Search Name..." class="form-control">
+
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-sm btn-primary">🔎</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
                 <div class="table-responsive">
-                    <table class="datatable table table-bordered table-hover">
+                    <table class="table table-bordered table-hover">
                         <thead>
                             <tr>
                                 <th>No.</th>
@@ -54,7 +67,7 @@
                         </thead>
 
                         <tbody>
-                            <tr v-for="(position,index) in positions" :key="position.id">
+                            <tr v-for="(position,index) in positions.data" :key="position.id">
                                 <td>{{index+1}}</td>
                                 <td>{{position.name}}</td>
                                 <td>
@@ -66,6 +79,8 @@
                         </tbody>
                     </table>
                 </div>
+
+                <pagination :data="positions" @pagination-change-page="view"></pagination>
             </div>
         </div>
     </div>
@@ -75,24 +90,29 @@
     export default {
         name: "PositionComponent",
 
+        props: ['auth_id'],
+
         data(){
             return {
                 positions: {},
                 position : {
                     name : "",
                     user_id : "",
-                }
+                },
+
+                search: "",
             }
         },
 
         methods:{
-            view(){
-                axios.get('/api/positions')
+            view(page=1){
+                axios.get(`/api/position_paginate?page=${page}&search=${this.search}`)
                 .then(response => {
                     this.positions = response.data.info;
                 })
             },
             store(){
+                this.position.user_id = this.auth_id;
                 axios.post('/api/positions',this.position)
                 .then(response=> {
                     Toast.fire({
@@ -100,6 +120,8 @@
                         title: 'Creating successfully'
                     })
                 })
+
+                window.location.reload();
             },
 
             destroy(id){

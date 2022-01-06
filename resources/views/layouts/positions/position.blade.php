@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title','Position')
+@section('title','HR Position')
 
 @section('content')
-    <position-component></position-component>
+    <position-component :auth_id={{$auth_id}}></position-component>
 @endsection
