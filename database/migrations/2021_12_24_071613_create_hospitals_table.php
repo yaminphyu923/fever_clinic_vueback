@@ -26,6 +26,7 @@ class CreateHospitalsTable extends Migration
             $table->text('sore_throat')->nullable();
             $table->text('chills')->nullable();
             $table->text('shaking_chills')->nullable();
+            $table->text('headache')->nullable();
             $table->text('taste_smell')->nullable();
             $table->text('malaise')->nullable();
             $table->text('odema')->nullable();

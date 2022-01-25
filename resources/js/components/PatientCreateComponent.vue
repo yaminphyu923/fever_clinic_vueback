@@ -205,6 +205,7 @@
                     symptoms: "",
                     travelHistory: "",
                     remark: "",
+                    date: "",
                     user_id: "",
                 },
                 calculatedAge: "",

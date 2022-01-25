@@ -2,13 +2,17 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h4><b>Lab List</b></h4>
+                <h4 class="mb-3"><b>Lab List</b></h4>
                 <a href="/"><button class="btn btn-md btn-primary">Home</button></a>
                 <button class="btn btn-md btn-primary" data-toggle="modal" data-target="#addLab">Add Lab</button>
                 <a href="/lab_category"><button class="btn btn-md btn-primary">Lab Category</button></a>
                 <a href="/group"><button class="btn btn-md btn-primary">Group</button></a>
                 <a href="/labs-export"><button class="btn btn-md btn-primary">Export Excel</button></a>
                 <button class="btn btn-md btn-primary" data-toggle="modal" data-target="#addExcel">Import Excel</button>
+            </div>
+
+            <div class="col-md-12 mt-5">
+                <button class="btn btn-sm btn-primary" @click="sortByName">Sort by Name</button>
             </div>
 
             <div class="col-md-12">
@@ -85,13 +89,13 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form @submit.prevent="">
+                                <form @submit.prevent="fileImport">
 
                                     <div class="form-group row">
                                         <label for="" class="col-sm-4"><b>Lab Excel File:</b></label>
 
                                         <div class="col-sm-8">
-                                            <input type="file" name="lab_file" class="form-control" id="lab_file" autocomplete="off">
+                                            <input type="file" name="lab_file" class="form-control" id="lab_file" autocomplete="off" v-on:change="onFileChange">
                                         </div>
                                     </div>
 
@@ -140,7 +144,7 @@
                                 <td>{{all_lab.unit}}</td>
                                 <td>{{all_lab.range}}</td>
                                 <td>{{(all_lab.group != null)?all_lab.group.name:'-'}}</td>
-                                <td>{{(all_lab.labCategory != null)?all_lab.labCategory.name:'-'}}</td>
+                                <td>{{(all_lab.lab_category != null)?all_lab.lab_category.name:'-'}}</td>
                                 <td>
                                     <a :href="'/lab/'+all_lab.id"><button class="btn btn-sm btn-warning">Edit</button></a>
 
@@ -185,12 +189,46 @@
                     user_id: "",
                 },
 
+                labFile: "",
+
                 search: "",
                 // showModal: true,
             }
         },
 
         methods:{
+
+            onFileChange(e){
+                this.labFile = e.target.files[0];
+            },
+
+            fileImport(){
+                const config = {
+                    headers: {
+                        'content-type': 'multipart/form-data'
+                    }
+                }
+
+                let formData = new FormData();
+                formData.append('labFile', this.labFile);
+                axios.post('/api/importFile',formData,config)
+                .then(response => {
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Creating successfully',
+                    })
+                })
+
+                 window.location.reload();
+            },
+
+            sortByName(page=1){
+                axios.get(`/api/labs_sortName?page=${page}`)
+                .then(response => {
+                    this.all_labs = response.data.info;
+                })
+            },
+
             index(page=1){
                 axios.get(`/api/labs_paginate?page=${page}&search=${this.search}`)
                 .then(response => {

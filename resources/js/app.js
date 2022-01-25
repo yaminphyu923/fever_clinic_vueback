@@ -39,9 +39,27 @@ Vue.component('patient-create-component', require('./components/PatientCreateCom
 
 Vue.component('hospital-create-component', require('./components/HospitalCreateComponent.vue').default);
 
+Vue.component('pastmedical-create-component', require('./components/PastMedicalCreateComponent.vue').default);
+
+Vue.component('phyexamination-create-component', require('./components/PhyExaminationCreateComponent.vue').default);
+
+Vue.component('diagnosis-create-component', require('./components/DiagnosisCreateComponent.vue').default);
+
 Vue.component('treatment-create-component', require('./components/TreatmentCreateComponent.vue').default);
 
+Vue.component('dead-create-component', require('./components/DeadCreateComponent.vue').default);
+
+Vue.component('discharge-create-component', require('./components/DischargeCreateComponent.vue').default);
+
+Vue.component('progress-create-component', require('./components/ProgressCreateComponent.vue').default);
+
+Vue.component('ptoverall-create-component', require('./components/PtOverallCreateComponent.vue').default);
+
+Vue.component('monitoring-create-component', require('./components/MonitoringCreateComponent.vue').default);
+
 Vue.component('imaging-create-component', require('./components/ImagingCreateComponent.vue').default);
+
+Vue.component('consultation-create-component', require('./components/ConsultationCreateComponent.vue').default);
 
 Vue.component('investigation-create-component', require('./components/InvestigationCreateComponent.vue').default);
 
@@ -93,7 +111,107 @@ Vue.component('disease-component', require('./components/DiseaseComponent.vue').
 
 Vue.component('editdisease-component', require('./components/EditDiseaseComponent.vue').default);
 
+Vue.component('edithistory-component', require('./components/EditHistoryComponent.vue').default);
 
+Vue.component('user-component', require('./components/UserComponent.vue').default);
+
+Vue.component('edituser-component', require('./components/EditUserComponent.vue').default);
+
+Vue.component('register-component', require('./components/RegisterComponent.vue').default);
+
+Vue.component('newlyregister-component', require('./components/NewlyRegisterComponent.vue').default);
+
+Vue.component('plnav-component', require('./components/PLNavComponent.vue').default);
+
+Vue.component('totalpatient-component', require('./components/TotalPatientComponent.vue').default);
+
+Vue.component('inpatient-component', require('./components/InPatientComponent.vue').default);
+
+Vue.component('outpatient-component', require('./components/OutPatientComponent.vue').default);
+
+Vue.component('comopatient-component', require('./components/ComobidityPatientComponent.vue').default);
+
+Vue.component('referralpatient-component', require('./components/ReferralPatientComponent.vue').default);
+
+Vue.component('deadpatient-component', require('./components/DeadPatientComponent.vue').default);
+
+Vue.component('detailpatient-component', require('./components/DetailPatientComponent.vue').default);
+
+Vue.component('rolemanagement-component', require('./components/RoleManagementComponent.vue').default);
+
+Vue.component('createrole-component', require('./components/CreateRoleComponent.vue').default);
+
+Vue.component('editrole-component', require('./components/EditRoleComponent.vue').default);
+
+Vue.component('showrole-component', require('./components/ShowRoleComponent.vue').default);
+
+Vue.component('permission-component', require('./components/PermissionComponent.vue').default);
+
+Vue.component('createpermission-component', require('./components/CreatePermissionComponent.vue').default);
+
+Vue.component('editpermission-component', require('./components/EditPermissionComponent.vue').default);
+
+Vue.component('newpatient-component', require('./components/NewPatientComponent.vue').default);
+
+Vue.component('newpatientnav-component', require('./components/NewPatientNavComponent.vue').default);
+
+Vue.component('newhospital-component', require('./components/NewHospitalComponent.vue').default);
+
+Vue.component('newpastmedical-component', require('./components/NewPastMedicalComponent.vue').default);
+
+Vue.component('newphyexamination-component', require('./components/NewPhyExaminationComponent.vue').default);
+
+Vue.component('newdiagnosis-component', require('./components/NewDiagnosisComponent.vue').default);
+
+Vue.component('newinvestigation-component', require('./components/NewInvestigationComponent.vue').default);
+
+Vue.component('newtreatment-component', require('./components/NewTreatmentComponent.vue').default);
+
+Vue.component('newdead-component', require('./components/NewDeadComponent.vue').default);
+
+Vue.component('newdischarge-component', require('./components/NewDischargeComponent.vue').default);
+
+Vue.component('newprogress-component', require('./components/NewProgressComponent.vue').default);
+
+Vue.component('newptoverall-component', require('./components/NewPtOverallComponent.vue').default);
+
+Vue.component('newmonitoring-component', require('./components/NewMonitoringComponent.vue').default);
+
+Vue.component('newimaging-component', require('./components/NewImagingComponent.vue').default);
+
+Vue.component('newconsultation-component', require('./components/NewConsultationComponent.vue').default);
+
+Vue.component('editpatientnav-component', require('./components/EditPatientNavComponent.vue').default);
+
+Vue.component('editpatient-component', require('./components/EditPatientComponent.vue').default);
+
+Vue.component('edithospital-component', require('./components/EditHospitalComponent.vue').default);
+
+Vue.component('editpastmedical-component', require('./components/EditPastMedicalComponent.vue').default);
+
+Vue.component('editpastmedical-component', require('./components/EditPastMedicalComponent.vue').default);
+
+Vue.component('editphyexamination-component', require('./components/EditPhyExaminationComponent.vue').default);
+
+Vue.component('editdiagnosis-component', require('./components/EditDiagnosisComponent.vue').default);
+
+Vue.component('editinvestigation-component', require('./components/EditInvestigationComponent.vue').default);
+
+Vue.component('edittreatment-component', require('./components/EditTreatmentComponent.vue').default);
+
+Vue.component('editdead-component', require('./components/EditDeadComponent.vue').default);
+
+Vue.component('editdischarge-component', require('./components/EditDischargeComponent.vue').default);
+
+Vue.component('editprogress-component', require('./components/EditProgressComponent.vue').default);
+
+Vue.component('editptoverall-component', require('./components/EditPtOverallComponent.vue').default);
+
+Vue.component('editmonitoring-component', require('./components/EditMonitoringComponent.vue').default);
+
+Vue.component('editimaging-component', require('./components/EditImagingComponent.vue').default);
+
+Vue.component('editconsultation-component', require('./components/EditConsultationComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

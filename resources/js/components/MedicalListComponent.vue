@@ -114,7 +114,7 @@
                                 <td>
                                     <a :href="'/detail_medical/'+ allmedical.id"><button class="btn btn-sm btn-warning">👁 Detail</button></a>
 
-                                    <button class="btn btn-sm btn-danger" @click="destroy(allmedical.id)">🗑 Delete</button>
+                                    <button class="btn btn-sm btn-danger" @click="destroy(allmedical.id)" v-if="auth_user.role != 'superadmin'">🗑 Delete</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -134,12 +134,14 @@
     export default {
         name: 'MedicalListComponent',
 
-        props: ['auth_id'],
+        props: ['auth_user'],
 
         components: {Select2},
 
         data(){
             return {
+                role : '',
+
                 medical : {
                     name: "",
                     start_date: "",
@@ -172,7 +174,7 @@
                 });
             },
             store(){
-                this.medical.user_id = this.auth_id;
+                this.medical.user_id = this.auth_user.id;
                 axios.post('/api/medical_lists',this.medical)
                 .then(response => {
 
@@ -213,6 +215,8 @@
             this.category();
             this.index();
             this.formatDate();
+
+            console.log(this.auth_user);
         }
     }
 

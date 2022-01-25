@@ -97,8 +97,8 @@ class HomeController extends Controller
     }
 
     public function medicalList(){
-        $auth_id = auth()->user()->id;
-        return view('layouts.medical_lists.medical_list',compact('auth_id'));
+        $auth_user = auth()->user();
+        return view('layouts.medical_lists.medical_list',compact('auth_user'));
     }
 
     public function detailMedicalList(){
@@ -165,4 +165,277 @@ class HomeController extends Controller
         $auth_id = auth()->user()->id;
         return view('layouts.diseases.edit_disease',compact('auth_id'));
     }
+
+    public function pastMedicalCreate(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.pastmedicals.create_pastmedical',compact('auth_id'));
+    }
+
+    public function phyExaminationCreate(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.phy_examinations.create_phy_examination',compact('auth_id'));
+    }
+
+    public function diagnosisCreate(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.diagnoses.create_diagnosis',compact('auth_id'));
+    }
+
+    public function deadCreate(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.deads.create_dead',compact('auth_id'));
+    }
+
+    public function dischargeCreate(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.discharges.create_discharge',compact('auth_id'));
+    }
+
+    public function progressNoteCreate(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.progress_notes.create_progress',compact('auth_id'));
+    }
+
+    public function ptOverallCreate(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.pt_overalls.create_ptoverall',compact('auth_id'));
+    }
+
+    public function monitoringCreate(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.monitorings.create_monitoring',compact('auth_id'));
+    }
+
+    public function consultationCreate(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.consultations.create_consultation',compact('auth_id'));
+    }
+
+    public function editHistory(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.edit_history',compact('auth_id'));
+    }
+
+    public function user(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.users.user',compact('auth_id'));
+    }
+
+    public function editUser(){
+        return view('layouts.users.edit_user');
+    }
+
+    public function register(){
+        // $auth_id = auth()->user()->id;
+        return view('layouts.users.register');
+    }
+
+    public function newlyRegister(){
+        // $auth_id = auth()->user()->id;
+        return view('layouts.users.newly_register');
+    }
+
+    public function totalPatient(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.patient_lists.total_patient',compact('auth_id'));
+    }
+
+    public function inPatient(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.patient_lists.in_patient',compact('auth_id'));
+    }
+
+    public function outPatient(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.patient_lists.out_patient',compact('auth_id'));
+    }
+
+    public function deadPatient(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.patient_lists.dead_patient',compact('auth_id'));
+    }
+
+    public function comoPatient(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.patient_lists.comobidity_patient',compact('auth_id'));
+    }
+
+    public function referralPatient(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.patient_lists.referral_patient',compact('auth_id'));
+    }
+
+    public function detailPatient(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.patients.detail_patient',compact('auth_id'));
+    }
+
+    public function roleManagement(){
+        return view('layouts.roles.role');
+    }
+
+    public function createRole(){
+        return view('layouts.roles.create_role');
+    }
+
+    public function editRole(){
+        return view('layouts.roles.edit_role');
+    }
+
+    public function showRole(){
+        return view('layouts.roles.show_role');
+    }
+
+    public function permission(){
+        return view('layouts.permissions.permission');
+    }
+
+    public function createPermission(){
+        return view('layouts.permissions.create_permission');
+    }
+
+    public function editPermission(){
+        return view('layouts.permissions.edit_permission');
+    }
+
+    public function newPatient(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.new_medical_histories.new_patient',compact('auth_id'));
+    }
+
+    public function newHospital(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.new_medical_histories.new_hospital',compact('auth_id'));
+    }
+
+    public function newPastMedical(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.new_medical_histories.new_pastmedical',compact('auth_id'));
+    }
+
+    public function newPhyExamination(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.new_medical_histories.new_phyexamination',compact('auth_id'));
+    }
+
+    public function newDiagnosis(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.new_medical_histories.new_diagnosis',compact('auth_id'));
+    }
+
+    public function newInvestigation(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.new_medical_histories.new_investigation',compact('auth_id'));
+    }
+
+    public function newTreatment(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.new_medical_histories.new_treatment',compact('auth_id'));
+    }
+
+    public function newDead(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.new_medical_histories.new_dead',compact('auth_id'));
+    }
+
+    public function newDischarge(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.new_medical_histories.new_discharge',compact('auth_id'));
+    }
+
+    public function newProgress(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.new_medical_histories.new_progress',compact('auth_id'));
+    }
+
+    public function newPtOverall(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.new_medical_histories.new_ptoverall',compact('auth_id'));
+    }
+
+    public function newMonitoring(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.new_medical_histories.new_monitoring',compact('auth_id'));
+    }
+
+    public function newImaging(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.new_medical_histories.new_imaging',compact('auth_id'));
+    }
+
+    public function newConsultation(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.new_medical_histories.new_consultation',compact('auth_id'));
+    }
+
+    public function editPatient(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.edits.edit_patient',compact('auth_id'));
+    }
+
+    public function editHospital(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.edits.edit_hospital',compact('auth_id'));
+    }
+
+    public function editPastMedical(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.edits.edit_pastmedical',compact('auth_id'));
+    }
+
+    public function editPhyExamination(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.edits.edit_phyexamination',compact('auth_id'));
+    }
+
+    public function editDiagnosis(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.edits.edit_diagnosis',compact('auth_id'));
+    }
+
+    public function editInvestigation(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.edits.edit_investigation',compact('auth_id'));
+    }
+
+    public function editTreatment(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.edits.edit_treatment',compact('auth_id'));
+    }
+
+    public function editDead(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.edits.edit_dead',compact('auth_id'));
+    }
+
+    public function editDischarge(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.edits.edit_discharge',compact('auth_id'));
+    }
+
+    public function editProgress(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.edits.edit_progress',compact('auth_id'));
+    }
+
+    public function editPtOverall(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.edits.edit_ptoverall',compact('auth_id'));
+    }
+
+    public function editMonitoring(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.edits.edit_monitoring',compact('auth_id'));
+    }
+
+    public function editImaging(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.edits.edit_imaging',compact('auth_id'));
+    }
+
+    public function editConsultation(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.edits.edit_consultation',compact('auth_id'));
+    }
+
 }

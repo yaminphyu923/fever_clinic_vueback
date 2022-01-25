@@ -19,6 +19,7 @@ class PrescriptiveMedicine extends Model
         "patient_id",
         "doctor_id",
         "medical_list_id",
+        "status",
         "user_id"
     ];
 

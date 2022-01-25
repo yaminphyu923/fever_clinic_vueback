@@ -7,6 +7,21 @@
             </div>
 
             <div class="col-sm-12 mt-3">
+                <h4><b>Prescriptive Medicine</b></h4>
+                <div class="row">
+                    <div class="col-sm-3 offset-sm-9 mb-3">
+                        <form @submit.prevent="index">
+                            <div class="input-group">
+                                <input type="text" v-model="search" placeholder="Search..." class="form-control">
+
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-sm btn-primary">🔎</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover">
                         <thead>
@@ -27,9 +42,12 @@
                                 <td>{{(pre.patient != null)?pre.patient.name:"-"}}</td>
                                 <td>{{(pre.doctor != null)?pre.doctor.name:"-"}}</td>
                                 <!-- {{(pre.medicalList != null)?pre.medicalList.name:"-"}} -->
-                                <td>{{(pre.medicalList != null)?pre.medicalList.name:"-"}}</td>
+                                <td>{{(pre.medical_list != null)?pre.medical_list.name:"-"}}</td>
                                 <td>
-                                    <button type="button" class="btn btn-sm btn-primary">Out</button>
+                                    <form>
+                                        <!-- <input type="text" :value="pre.id"> -->
+                                        <button type="button" class="btn btn-sm btn-primary" @click="out(pre.id)">Out</button>
+                                    </form>
                                 </td>
                             </tr>
                         </tbody>
@@ -49,12 +67,14 @@ export default {
     data(){
         return {
             pre_medicines : {},
+
+            search: "",
         }
     },
 
     methods: {
         index(page=1){
-            axios.get(`/api/pre_medicines_paginate?page=${page}`)
+            axios.get(`/api/pre_medicines_paginate?page=${page}&search=${this.search}`)
             .then(response => {
                 this.pre_medicines = response.data.info;
             })
@@ -62,6 +82,16 @@ export default {
         formatDate(date) {
             return moment(date).format('DD/MM/YYYY');
         },
+
+        out(id){
+            axios.put(`/api/pre_medicines/${id}`)
+            .then(response => {
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Out Patient Successfully'
+                })
+            })
+        }
     },
 
     created(){

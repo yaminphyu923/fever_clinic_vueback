@@ -19,6 +19,7 @@ class CreatePrescriptiveMedicinesTable extends Migration
             $table->text('patient_id')->nullable();
             $table->text('doctor_id')->nullable();
             $table->text('medical_list_id')->nullable();
+            $table->text('status')->nullable();
             $table->text('user_id')->nullable();
             $table->timestamps();
         });

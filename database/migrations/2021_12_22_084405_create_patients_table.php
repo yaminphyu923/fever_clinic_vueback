@@ -29,6 +29,13 @@ class CreatePatientsTable extends Migration
             $table->string("travelHistory")->nullable();
             $table->string("remark")->nullable();
             $table->string("date")->nullable();
+            $table->string("como")->nullable();
+            $table->string("comobidity")->nullable();
+            $table->string("out_patient")->nullable();
+            $table->string("out_date")->nullable();
+            $table->string("dead")->nullable();
+            $table->string("dead_date")->nullable();
+            $table->string("refer")->nullable();
             $table->string("user_id")->nullable();
             $table->timestamps();
         });

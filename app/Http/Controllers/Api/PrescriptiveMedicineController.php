@@ -20,18 +20,27 @@ class PrescriptiveMedicineController extends Controller
         return ApiResponse::success('Successful',$pres);
     }
 
-    public function prescriptiveMedicinePaginate()
+    public function prescriptiveMedicinePaginate(Request $request)
     {
-        // if($request->search){
-        //     $pres = PrescriptiveMedicine::with('patient')->with('user')->with('doctor')->with('medicalList')
-        //                                 ->whereDate('refill_date',$request->search)
-        //                                 ->latest('id')->paginate(10);
-        //     return ApiResponse::success('Success',$pres);
-        // }
-        // else{
-            $pres = PrescriptiveMedicine::with('patient')->with('user')->with('doctor')->with('medicalList')->latest('id')->paginate(10);
+        if($request->search){
+            $pres = PrescriptiveMedicine::with('patient')->with('user')->with('doctor')->with('medicalList')
+                                        ->join('patients as patient','patient.id','=','prescriptive_medicines.patient_id')
+                                        ->join('medical_lists as medical','medical.id','=','prescriptive_medicines.medical_list_id')
+                                        ->join('doctors as doctor','doctor.id','=','prescriptive_medicines.doctor_id')
+                                        ->where('patient.name','like','%'.$request->search.'%')
+                                        ->orWhere('medical.name','like','%'.$request->search.'%')
+                                        ->orWhere('doctor.name','like','%'.$request->search.'%')
+                                        ->where('prescriptive_medicines.status','like',0)
+                                        ->select('prescriptive_medicines.*')
+                                        ->latest('id')->paginate(10);
+            return ApiResponse::success('Success',$pres);
+        }
+        else{
+            $pres = PrescriptiveMedicine::with('patient')->with('user')->with('doctor')->with('medicalList')
+                    ->where('status','like',0)
+                    ->latest('id')->paginate(10);
             return ApiResponse::success('Successful',$pres);
-        // }
+        }
     }
 
     /**
@@ -65,7 +74,15 @@ class PrescriptiveMedicineController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $pre = PrescriptiveMedicine::find($id);
+        $pre->date = $pre->date;
+        $pre->patient_id = $pre->patient_id;
+        $pre->doctor_id = $pre->doctor_id;
+        $pre->medical_list_id = $pre->medical_list_id;
+        $pre->status = 1;
+        $pre->user_id = $pre->user_id;
+        $pre->save();
+
     }
 
     /**

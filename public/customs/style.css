@@ -45,4 +45,23 @@
         width: 400px !important;
         left: 1px !important;
     }
-  }
+}
+
+
+/* Patient List  */
+
+.plnav a{
+    border : 1px solid #0cbef9;
+    padding: 8px;
+    border-radius: 5px;
+    background-color: aqua;
+    color: #333;
+}
+
+.plnav a.plactive{
+    border : 1px solid #f93939;
+    padding: 8px;
+    border-radius: 5px;
+    background-color: #f93939;
+    color: #333;
+}

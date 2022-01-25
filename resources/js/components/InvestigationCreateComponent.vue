@@ -8,7 +8,7 @@
                     <p>Lab Test#</p>
 
 
-                    <form action="">
+                    <form @submit.prevent="store">
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group row">
@@ -99,7 +99,7 @@
                                 <div class="form-group row">
                                     <label for="" class="col-sm-4"><b>Choose</b></label>
                                     <div class="col-sm-8">
-                                        <select name="" id="" v-model="choose" class="form-control">
+                                        <select name="" id="" v-model="choose" class="form-control" v-on:change="choosing()">
                                             <option value="all">All</option>
                                             <option v-for="group in groups" :key="group.id" :value="group.id">{{group.name}}</option>
                                         </select>
@@ -108,15 +108,17 @@
                             </div>
 
                             <div class="col-sm-12">
-                                <div class="form-group row" v-for="lab in labs.data" :key="lab.id">
+                                <div class="form-group row" v-for="(lab,index) in all_labs.data" :key="lab.id">
                                     <label for="" class="col-sm-1"><b>Value</b></label>
                                     <div class="col-sm-2">
-                                        <input type="text" v-model="investigation.value" class="form-control">
+                                        <input type="text" name="value[]" :id="lab.id" v-model="investigation.value[index]" class="form-control">
                                     </div>
+
+
 
                                     <label for="" class="col-sm-1"><b>Remark</b></label>
                                     <div class="col-sm-2">
-                                        <input type="text" v-model="investigation.remark" class="form-control">
+                                        <input type="text" name="remark" v-model="investigation.remark[index]" class="form-control">
                                     </div>
 
                                     <div class="col-sm-6 table-responsive">
@@ -133,20 +135,23 @@
 
                                             <tbody>
                                                 <tr>
-                                                    <td><input type="hidden" v-model="lab.lab_name">{{lab.name}}</td>
-                                                    <td><input type="hidden" v-model="lab.lab_unit">{{lab.unit}}</td>
-                                                    <td><input type="hidden" v-model="lab.lab_range">{{lab.range}}</td>
-                                                    <td><input type="hidden" v-model="lab.group_id">{{(lab.group != null) ? lab.group.name:"-"}}</td>
-                                                    <td><input type="hidden" v-model="lab.labcategory_id">{{(lab.labCategory != null) ? lab.labCategory.name:"-"}}</td>
+                                                    <td><input type="hidden" v-model="lab.name">{{lab.name}}</td>
+                                                    <td><input type="hidden" v-model="investigation.lab_unit[index]">{{lab.unit}}</td>
+                                                    <td><input type="hidden" v-model="investigation.lab_range[index]">{{lab.range}}</td>
+                                                    <td><input type="hidden" v-model="investigation.group_id[index]">{{(lab.group != null) ? lab.group.name:"-"}}</td>
+                                                    <td><input type="hidden" v-model="investigation.labcategory_id[index]">{{(lab.labCategory != null) ? lab.labCategory.name:"-"}}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
 
-                                <pagination :data="labs" @pagination-change-page="lab"></pagination>
+                                <pagination :data="all_labs" @pagination-change-page="choosing"></pagination>
                             </div>
 
+                            <div class="col-sm-2 offset-sm-10">
+                                <button type="submit" class="btn btn-md btn-success btn-block"><b>Save</b></button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -182,7 +187,7 @@
             //         value: '',
             //    }],
 
-                labs: {},
+                all_labs: {},
 
                investigation: {
                    patient_id: "",
@@ -207,6 +212,16 @@
        },
 
        methods:{
+
+           choosing(page=1) {
+            //    console.log(this.choose);
+                axios.get(`/api/labs_group?page=${page}&search=${this.choose}`)
+                .then(response => {
+                    this.all_labs = response.data.info;
+                    console.log(this.all_labs);
+                })
+            },
+
            onImageChange(e) {
                 this.investigation.image = e.target.files[0];
             },
@@ -238,14 +253,63 @@
                 .then(response => {
                     this.labs = response.data.info;
                 })
-            }
+            },
+
+            store(){
+                const config = {
+                    headers: {
+                        'content-type': 'multipart/form-data'
+                    }
+                }
+
+                this.all_labs.data.forEach((lab)=>{
+                    this.investigation.lab_name.push(lab.name);
+                    this.investigation.lab_unit.push(lab.unit);
+                    this.investigation.lab_range.push(lab.range);
+                    this.investigation.group_id.push(lab.group_id);
+                    this.investigation.labcategory_id.push(lab.labcategory_id);
+                });
+
+
+                let formData = new FormData();
+
+                formData.append('patient_id', this.investigation.patient_id);
+                formData.append('doctor_id', this.investigation.doctor_id);
+                formData.append('date_requested', this.investigation.date_requested);
+                formData.append('date_analysis', this.investigation.date_analysis);
+                formData.append('doctor_test', this.investigation.doctor_test);
+                formData.append('queue', this.investigation.queue);
+                formData.append('image', this.investigation.image);
+                formData.append('exam_request', this.investigation.exam_request);
+                formData.append('note', this.investigation.note);
+                formData.append('value', this.investigation.value);
+                formData.append('remark', this.investigation.remark);
+                formData.append('lab_name', this.investigation.lab_name);
+                formData.append('lab_unit', this.investigation.lab_unit);
+                formData.append('lab_range', this.investigation.lab_range);
+                formData.append('group_id', this.investigation.group_id);
+                formData.append('labcategory_id', this.investigation.labcategory_id);
+
+                this.investigation.user_id = this.auth_id;
+                formData.append('user_id', this.investigation.user_id);
+                console.log(this.investigation);
+
+                axios.post('/api/investigations',formData,config)
+                .then(response => {
+                    //console.log(response);
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Creating successfully',
+                    })
+                })
+            },
        },
 
         created(){
             this.patient();
             this.doctor();
             this.group();
-            this.lab();
+            this.choosing();
         }
     }
 </script>

@@ -23,6 +23,7 @@ class Hospital extends Model
         "sore_throat",
         "chills",
         "shaking_chills",
+        "headache",
         "taste_smell",
         "malaise",
         "odema",

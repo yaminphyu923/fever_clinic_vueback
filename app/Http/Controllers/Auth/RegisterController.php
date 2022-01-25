@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
 use App\Models\User;
-use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
 {
@@ -72,4 +74,29 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
     }
+
+    public function store(Request $request){
+        $this->validate($request,[
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+
+        $sql = new User;
+        $sql->name = $request->name;
+        $sql->email = $request->email;
+        $sql->password = Hash::make($request->password);
+        $sql->sama = $request->sama;
+        $sql->role = $request->role;
+        $sql->status = $request->status;
+        $sql->save();
+        return redirect()->route('login');
+    }
+
+    public function register(){
+        $roles = Role::where("name","Staff")
+                        ->latest('id')->get();
+        return view('auth.register',compact('roles'));
+    }
+
 }

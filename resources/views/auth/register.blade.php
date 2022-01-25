@@ -7,7 +7,7 @@
             <div class="card register-card my-5">
                 <div class="card-body">
                     <h3 class="text-center my-5"><b>Register</b></h3>
-                    <form method="POST" action="{{ route('register') }}">
+                    <form method="POST" action="{{ route('homeRegister') }}">
                         @csrf
 
                         <div class="row mb-3">
@@ -82,8 +82,23 @@
                             </div>
                         </div>
 
+                        <div class="form-group row">
+                            <label for="" class="col-md-4 offset-md-1 text-md-right">Role</label>
+
+                            <div class="col-sm-6">
+                                <select name="role" class="form-control choose" required>
+                                    @foreach($roles as $role)
+                                        <option value=""></option>
+                                        <option value="{{$role->id}}">{{$role->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="status" value="0">
+
                         <div class="row mb-0">
-                            <div class="col-md-10 offset-md-1">
+                            <div class="col-md-6 offset-md-5">
                                 <button type="submit" class="col-sm-12 btn btn-success my-3">
                                     ✔ {{ __('Register') }}
                                 </button>

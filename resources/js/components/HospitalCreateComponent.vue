@@ -12,9 +12,8 @@
                     <div class="form-group row">
                         <label for="" class="col-sm-4"><b>Patient ID(NRC)</b></label>
                         <div class="col-sm-8">
-                            <select name="patient_id" id="patient_id" v-model="hospitals.patient_id" class="form-control">
-                                <option v-for="patient in patients" :key="patient.id" :value="patient.id">{{patient.name}} ({{patient.nrc}})</option>
-                            </select>
+
+                            <Select2 v-model="hospitals.patient_id" :options="patients" :settings="{ settingOption: patients.text, settingOption: patients.text }"/>
                         </div>
                     </div>
                 </div>
@@ -48,9 +47,7 @@
                     <div class="form-group row">
                         <label for="" class="col-sm-4"><b>MultipleDoctorChoice</b></label>
                         <div class="col-sm-8">
-                            <select name="doctor_multiple_id" id="doctor_multiple_id" v-model="hospitals.doctor_multiple_id" class="form-control">
-                                <option v-for="doctor in doctors" :key="doctor.id" :value="doctor.id">{{doctor.name}}</option>
-                            </select>
+                            <Select2 v-model="hospitals.doctor_multiple_id" :options="doctors" :settings="{ settingOption: doctors.text, settingOption: doctors.text }"/>
                         </div>
                     </div>
                 </div>
@@ -58,9 +55,7 @@
                     <div class="form-group row">
                         <label for="" class="col-sm-4"><b>Incharge Doctor</b></label>
                         <div class="col-sm-8">
-                            <select name="doctor_incharge_id" id="doctor_incharge_id" v-model="hospitals.doctor_incharge_id" class="form-control">
-                                <option v-for="doctor in doctors" :key="doctor.id" :value="doctor.id">{{doctor.name}}</option>
-                            </select>
+                            <Select2 v-model="hospitals.doctor_incharge_id" :options="doctors" :settings="{ settingOption: doctors.text, settingOption: doctors.text }"/>
                         </div>
                     </div>
                 </div>
@@ -256,10 +251,15 @@
 </template>
 
 <script>
+
+    import Select2 from 'v-select2-component';
+
     export default {
         name: 'HospitalCreateComponent',
 
         props: ['auth_id'],
+
+        components: {Select2},
 
         data(){
             return {
@@ -275,6 +275,7 @@
                     sore_throat: "",
                     chills: "",
                     shaking_chills: "",
+                    headache: "",
                     taste_smell: "",
                     malaise: "",
                     odema: "",
@@ -284,23 +285,23 @@
                     others: "",
                     user_id: "",
                 },
-                patients: {},
+                patients: [],
 
-                doctors: {},
+                doctors: [],
             }
         },
         methods: {
              patient(){
-                axios.get('/api/patients')
+                axios.get('/api/patientData')
                 .then(response => {
-                    this.patients = response.data.info;
+                    this.patients = response.data;
+                    // console.log(this.patients);
                 })
             },
-
             doctor(){
-                axios.get('/api/doctors')
+                axios.get('/api/doctorData')
                 .then(response => {
-                    this.doctors = response.data.info;
+                    this.doctors = response.data;
                 })
             },
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Lab;
 use App\Exports\LabsExport;
+use App\Imports\LabsImport;
 use App\Helpers\ApiResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -24,7 +25,25 @@ class LabController extends Controller
 
     public function labPaginate(Request $request){
         if($request->search){
-            $labs = Lab::with('group','labCategory','user')->where('name','like','%'.$request->search.'%')->latest('id')->paginate(10);
+            $labs = Lab::with('group','labCategory','user')
+            ->where('name','like','%'.$request->search.'%')
+            ->latest('id')->paginate(10);
+            return ApiResponse::success('Success',$labs);
+        }
+        else{
+            $labs = Lab::with('group','labCategory','user')->latest('id')->paginate(10);
+            return ApiResponse::success('Success',$labs);
+        }
+    }
+
+    public function labGroup(Request $request){
+        if($request->search != 'all'){
+            $labs = Lab::with('group','labCategory','user');
+            // if($request->search != 'all'){
+                $labs = $labs->where('group_id','like','%'.$request->search.'%');
+            // }
+
+            $labs = $labs->latest('id')->paginate(10);
             return ApiResponse::success('Success',$labs);
         }
         else{
@@ -99,5 +118,16 @@ class LabController extends Controller
     public function labExport()
     {
         return Excel::download(new LabsExport, 'labs.xlsx');
+    }
+
+    public function importFile(Request $request)
+    {
+        Excel::import(new LabsImport, $request->file('labFile')->store('temp'));
+        return back();
+    }
+
+    public function sortByName(){
+        $labs = Lab::with('group','labCategory','user')->orderBy('name')->paginate(10);
+        return ApiResponse::success('Success',$labs);
     }
 }
