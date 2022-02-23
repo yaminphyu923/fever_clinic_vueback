@@ -1,8 +1,12 @@
 <template>
     <div class="container-fluid">
         <div class="row justify-content-center">
-            <div class="col-sm-10 offset-sm-1">
+            <div class="col-sm-8 offset-sm-1">
                 <h3><b>Edit History</b></h3>
+            </div>
+
+            <div class="col-sm-3 text-right">
+                <a href="/"><button type="button" class="btn btn-sm btn-primary">🏠 Home</button></a>
             </div>
 
             <div class="col-sm-12 my-5">
@@ -28,8 +32,8 @@
                             <tr v-for="patient in patients.data" :key="patient.id">
                                 <td>
                                     <span class="badge badge-warning">♦ Date - {{formatDate(patient.date)}}</span>
-                                    <span class="text-primary"><b>Account Name - {{patient.user != null? patient.user.name : "-"}}
-                                        (Email Address - {{patient.user != null? patient.user.email : "-"}})
+                                    <span class="text-primary"><b>Account Name - {{patient.user.name == 'SuperAdmin'? "" : patient.user.name}}
+                                        (Email Address - {{(patient.user.email == 'mmcities@gmail.com')? "" : patient.user.email}})
                                     </b></span>
 
                                     <span>edited the patient data</span>
@@ -73,7 +77,7 @@
                 axios.get(`/api/edit_history?page=${page}&search=${this.search}`)
                 .then(response => {
                     this.patients = response.data.info;
-                    console.log(this.patients);
+                    //console.log(this.patients);
                 })
             },
 

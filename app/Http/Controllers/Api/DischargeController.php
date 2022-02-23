@@ -96,4 +96,11 @@ class DischargeController extends Controller
     {
         //
     }
+
+    public function detailDischargePrint($patient_id){
+        $discharges = Discharge::with('patient')
+                            ->where('patient_id',$patient_id)
+                            ->latest('id')->get();
+        return ApiResponse::success('successful',$discharges);
+    }
 }

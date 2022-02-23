@@ -156,4 +156,11 @@ class DeadController extends Controller
     {
         //
     }
+
+    public function detailDeadPrint($patient_id){
+        $deads = Dead::with('patient','doctor')
+                            ->where('patient_id',$patient_id)
+                            ->latest('id')->get();
+        return ApiResponse::success('successful',$deads);
+    }
 }

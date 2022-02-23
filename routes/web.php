@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Api\LabController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Api\PatientController;
+use App\Http\Controllers\Api\BuildingController;
 use App\Http\Controllers\Auth\RegisterController;
 
 /*
@@ -180,6 +181,8 @@ Route::get('/new-consultation/{id}',[HomeController::class, 'newConsultation']);
 
 Route::get('/edit-patient/{id}/{hospital_id}/{date}',[HomeController::class, 'editPatient']);
 
+Route::get('/edit-pat/{id}',[HomeController::class, 'editPat']);
+
 Route::get('/edit-hospital/{patient_id}/{id}/{date}',[HomeController::class, 'editHospital']);
 
 Route::get('/edit-pastmedical/{patient_id}/{id}/{date}',[HomeController::class, 'editPastMedical']);
@@ -205,6 +208,48 @@ Route::get('/edit-monitoring/{patient_id}/{id}/{date}',[HomeController::class, '
 Route::get('/edit-imaging/{patient_id}/{id}/{date}',[HomeController::class, 'editImaging']);
 
 Route::get('/edit-consultation/{patient_id}/{id}/{date}',[HomeController::class, 'editConsultation']);
+
+Route::get('/duty',[HomeController::class, 'duty']);
+
+Route::get('/hrDuty',[HomeController::class, 'hrDuty']);
+
+Route::get('/doctor_duties/{id}',[HomeController::class, 'editDuty']);
+
+Route::get('/time',[HomeController::class, 'time']);
+
+Route::get('/times/{id}',[HomeController::class, 'editTime']);
+
+Route::get('/hr_duties/{id}',[HomeController::class, 'editHRDuty']);
+
+Route::get('/building',[HomeController::class, 'building']);
+
+Route::get('/buildings/{id}',[HomeController::class, 'editBuilding']);
+
+Route::get('/floor',[HomeController::class, 'floor']);
+
+Route::get('/floors/{id}',[HomeController::class, 'editFloor']);
+
+Route::get('/room',[HomeController::class, 'room']);
+
+Route::get('/rooms/{id}',[HomeController::class, 'editRoom']);
+
+Route::get('/bed',[HomeController::class, 'bed']);
+
+Route::get('/beds/{id}',[HomeController::class, 'editBed']);
+
+Route::get('/donation',[HomeController::class, 'donation']);
+
+Route::get('/expense',[HomeController::class, 'expense']);
+
+Route::get('/remain',[HomeController::class, 'remain']);
+
+Route::get('/summary',[HomeController::class, 'summary']);
+
+Route::get('/pdf/{id}',[HomeController::class, 'pdf']);
+
+Route::get('/createPDF/{id}', [HomeController::class, 'createPDF']);
+
+Route::get('/userGuide', [HomeController::class, 'userGuide']);
 
 
 // Excel

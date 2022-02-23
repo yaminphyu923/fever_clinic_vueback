@@ -86,4 +86,11 @@ class DiagnosisController extends Controller
     {
         //
     }
+
+    public function detailDiagnosisPrint($patient_id){
+        $diagnoses = Diagnosis::with('patient')
+                            ->where('patient_id',$patient_id)
+                            ->latest('id')->get();
+        return ApiResponse::success('successful',$diagnoses);
+    }
 }

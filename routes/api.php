@@ -2,23 +2,34 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\BedController;
 use App\Http\Controllers\Api\LabController;
 use App\Http\Controllers\Api\DeadController;
 use App\Http\Controllers\Api\RoleController;
+use App\Http\Controllers\Api\RoomController;
+use App\Http\Controllers\Api\TimeController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\FloorController;
 use App\Http\Controllers\Api\GroupController;
 use App\Http\Controllers\Api\DegreeController;
 use App\Http\Controllers\Api\DoctorController;
+use App\Http\Controllers\Api\HRDutyController;
+use App\Http\Controllers\Api\RemainController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Api\DiseaseController;
+use App\Http\Controllers\Api\ExpenseController;
 use App\Http\Controllers\Api\ImagingController;
 use App\Http\Controllers\Api\PatientController;
+use App\Http\Controllers\Api\SummaryController;
+use App\Http\Controllers\Api\BuildingController;
+use App\Http\Controllers\Api\DonationController;
 use App\Http\Controllers\Api\HospitalController;
 use App\Http\Controllers\Api\PositionController;
 use App\Http\Controllers\Api\DiagnosisController;
 use App\Http\Controllers\Api\DischargeController;
 use App\Http\Controllers\Api\PtOverallController;
 use App\Http\Controllers\Api\TreatmentController;
+use App\Http\Controllers\Api\DoctorDutyController;
 use App\Http\Controllers\Api\MonitoringController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\SpecialityController;
@@ -98,6 +109,8 @@ Route::get('/positions/edit/{id}',[PositionController::class,'edit']);
 
 Route::apiResource('hrs',HRManagementController::class);
 
+Route::get('hrsData',[HRManagementController::class,'HRData']);
+
 Route::get('hrs_paginate',[HRManagementController::class, 'hrPaginate']);
 
 Route::apiResource('hospitals',HospitalController::class);
@@ -109,6 +122,8 @@ Route::apiResource('phy_examinations',PhyExaminationController::class);
 Route::apiResource('diagnoses',DiagnosisController::class);
 
 Route::apiResource('imagings',ImagingController::class);
+
+Route::post('imaging-update',[ImagingController::class,'imagingUpdate']);
 
 Route::apiResource('treatments',TreatmentController::class);
 
@@ -224,6 +239,86 @@ Route::get('roleData',[RoleController::class,'roleData']);
 
 Route::get('detailPatientHospital/{patient_id}', [HospitalController::class, 'detailPatientHospital']);
 
+Route::apiResource('times',TimeController::class);
+
+Route::get('timePaginate',[TimeController::class,'timePaginate']);
+
+Route::get('timeData',[TimeController::class,'timeData']);
+
+Route::apiResource('doctor_duties',DoctorDutyController::class);
+
+Route::get('doctorDutyPaginate',[DoctorDutyController::class,'doctorDutyPaginate']);
+
+Route::get('sortByLatestDoctor',[DoctorDutyController::class,'sortByLatestUpdate']);
+
+Route::apiResource('hr_duties',HRDutyController::class);
+
+Route::get('hrDutyPaginate',[HRDutyController::class,'hrDutyPaginate']);
+
+Route::get('sortByLatestUpdate',[HRDutyController::class,'sortByLatestUpdate']);
+
+Route::apiResource('buildings',BuildingController::class);
+
+Route::get('buildingPaginate',[BuildingController::class,'buildingPaginate']);
+
+Route::apiResource('floors',FloorController::class);
+
+Route::get('floorPaginate',[FloorController::class,'floorPaginate']);
+
+Route::apiResource('rooms',RoomController::class);
+
+Route::get('roomPaginate',[RoomController::class,'roomPaginate']);
+
+Route::apiResource('beds',BedController::class);
+
+Route::get('bedPaginate',[BedController::class,'bedPaginate']);
+
+Route::get('bedData',[BedController::class,'bedData']);
+
+Route::get('vacant',[BedController::class,'vacant']);
+
+Route::get('occupied',[BedController::class,'occupied']);
+
+Route::get('bedSearch',[BedController::class,'bedSearch']);
+
+Route::apiResource('donations',DonationController::class);
+
+Route::get('donationPaginate',[DonationController::class,'donationPaginate']);
+
+Route::apiResource('expenses',ExpenseController::class);
+
+Route::get('expensePaginate',[ExpenseController::class,'expensePaginate']);
+
+Route::get('remainPaginate',[RemainController::class,'remainPaginate']);
+
+Route::apiResource('/summaries',SummaryController::class);
+
+Route::get('detailHospitalPrint/{id}',[HospitalController::class, 'detailHospitalPrint']);
+
+Route::get('detailPastPrint/{id}',[PastMedicalController::class, 'detailPastPrint']);
+
+Route::get('detailPhysicalPrint/{id}',[PhyExaminationController::class, 'detailPhysicalPrint']);
+
+Route::get('detailDiagnosisPrint/{id}',[DiagnosisController::class, 'detailDiagnosisPrint']);
+
+Route::get('detailInvestigationPrint/{id}',[InvestigationController::class, 'detailInvestigationPrint']);
+
+Route::get('detailTreatmentPrint/{id}',[TreatmentController::class, 'detailTreatmentPrint']);
+
+Route::get('detailDeadPrint/{id}',[DeadController::class, 'detailDeadPrint']);
+
+Route::get('detailDischargePrint/{id}',[DischargeController::class, 'detailDischargePrint']);
+
+Route::get('detailProgressPrint/{id}',[ProgressNoteController::class, 'detailProgressPrint']);
+
+Route::get('detailPtOverallPrint/{id}',[PtOverallController::class, 'detailPtOverallPrint']);
+
+Route::get('detailMonitoringPrint/{id}',[MonitoringController::class, 'detailMonitoringPrint']);
+
+Route::get('detailImagingPrint/{id}',[ImagingController::class, 'detailImagingPrint']);
+
+Route::get('detailConsultationPrint/{id}',[ConsultationController::class, 'detailConsultationPrint']);
+
 // Edit
 
 Route::get('/edit-pastmedical/{patient_id}/{date}',[PastMedicalController::class,'edit']);
@@ -255,6 +350,8 @@ Route::get('/edit-consultation/{patient_id}/{date}',[ConsultationController::cla
 Route::post('importFile',[LabController::class, 'importFile']);
 
 Route::post('totalPatient',[PatientController::class, 'totalPatientImport']);
+
+// Route::get('/createPDF', [PatientController::class, 'createPDF']);
 
 
 

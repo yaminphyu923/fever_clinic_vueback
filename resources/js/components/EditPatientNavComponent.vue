@@ -7,12 +7,12 @@
                 <a :href="'/edit-pastmedical/'+ id + '/'+hospital_id+'/' + date" v-if="past_medicals != null" class="mr-4" :class="activeClass('edit-pastmedical')"><b>Past Medical History</b></a>
                 <a :href="'/edit-phyexamination/'+id+'/'+hospital_id+'/'+date" v-if="phy_examinations != null" class="mr-4" :class="activeClass('edit-phyexamination')"><b>Physical Examination</b></a>
                 <a :href="'/edit-diagnosis/'+id+'/'+hospital_id+'/'+date" v-if="diagnosis != null" class="mr-4" :class="activeClass('edit-diagnosis')"><b>Diagnosis</b></a>
-                <a :href="'/edit-investigation/'+id+'/'+hospital_id+'/'+date" v-if="investigations != null" class="mr-4" :class="activeClass('edit-investigation')"><b>Investigation</b></a>
-                <a :href="'/edit-treatment/'+id+'/'+hospital_id+'/'+date" v-if="treatments != null" class="mr-4" :class="activeClass('edit-treatment')"><b>Treatment</b></a>
+                <a :href="'/edit-investigation/'+id+'/'+hospital_id+'/'+date" v-if="investigations.length > 0" class="mr-4" :class="activeClass('edit-investigation')"><b>Investigation</b></a>
+                <a :href="'/edit-treatment/'+id+'/'+hospital_id+'/'+date" v-if="treatments.length > 0" class="mr-4" :class="activeClass('edit-treatment')"><b>Treatment</b></a>
                 <a :href="'/edit-dead/'+id+'/'+hospital_id+'/'+date" v-if="dead != null" class="mr-4" :class="activeClass('edit-dead')"><b>Dead</b></a>
                 <a :href="'/edit-discharge/'+id+'/'+hospital_id+'/'+date" v-if="discharge != null" class="mr-4" :class="activeClass('edit-discharge')"><b>Discharge</b></a>
                 <a :href="'/edit-progress/'+id+'/'+hospital_id+'/'+date" v-if="progress != null" class="mr-4" :class="activeClass('edit-progress')"><b>Progress Note</b></a>
-                <a :href="'/edit-ptoverall/'+id+'/'+hospital_id+'/'+date" v-if="ptoverall != null" class="mr-4" :class="activeClass('edit-ptoverall')"><b>Pt Overall Performance</b></a>
+                <a :href="'/edit-ptoverall/'+id+'/'+hospital_id+'/'+date" v-if="ptoverall.length > 0" class="mr-4" :class="activeClass('edit-ptoverall')"><b>Pt Overall Performance</b></a>
                 <a :href="'/edit-monitoring/'+id+'/'+hospital_id+'/'+date" v-if="monitoring != null" class="mr-4" :class="activeClass('edit-monitoring')"><b>Monitoring</b></a>
                 <a :href="'/edit-imaging/'+id+'/'+hospital_id+'/'+date" v-if="images != null" class="mr-4" :class="activeClass('edit-imaging')"><b>Imaging</b></a>
                 <a :href="'/edit-consultation/'+id+'/'+hospital_id+'/'+date" v-if="consultation != null" class="mr-4" :class="activeClass('edit-consultation')"><b>Consultation</b></a>
@@ -93,7 +93,7 @@
             .then(response => {
 
                 this.past_medicals = response.data.info;
-                console.log(this.past_medicals);
+                //console.log(this.past_medicals);
             })
 
             axios.get(`/api/edit-phyexamination/${this.id}/${this.date}`)
@@ -109,6 +109,7 @@
 
             axios.get(`/api/edit-investigation/${this.id}/${this.date}`)
             .then(response => {
+                //console.log(response.data.info);
                 this.investigations = response.data.info;
             })
 

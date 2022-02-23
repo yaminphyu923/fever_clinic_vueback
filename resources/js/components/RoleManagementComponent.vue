@@ -10,7 +10,7 @@
                 <h4><b>Role Management</b></h4>
             </div>
             <div class="col-md-6">
-                <a class="btn btn-success float-right" href="/create-role"> Create New Role</a>
+                <a class="btn btn-success float-right" href="/create-role" v-if="create == true"> Create New Role</a>
             </div>
 
             <div class="col-sm-12 mt-3">
@@ -44,10 +44,10 @@
                                 <td>{{role.name}}</td>
                                 <td>
 
-                                    <a :href="'/show-role/'+ role.id"><button class="btn btn-sm btn-primary">Show</button></a>
-                                    <a :href="'/edit-role/'+ role.id"><button class="btn btn-sm btn-warning">Edit</button></a>
+                                    <!-- <a :href="'/show-role/'+ role.id"><button class="btn btn-sm btn-primary">Show</button></a> -->
+                                    <a :href="'/edit-role/'+ role.id"><button class="btn btn-sm btn-warning" v-if="edit == true">Edit</button></a>
 
-                                    <button class="btn btn-sm btn-danger" @click="destroy(role.id)">Delete</button>
+                                    <button class="btn btn-sm btn-danger" @click="destroy(role.id)" v-if="del == true">Delete</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -64,11 +64,19 @@
     export default {
         name: 'RoleManagementComponent',
 
+        props : ['auth_id'],
+
         data(){
             return {
                 roles :{},
 
                 search: "",
+
+                create: false,
+
+                edit: false,
+
+                del: false,
             }
         },
 
@@ -78,6 +86,41 @@
                 .then(response => {
                     // console.log(response.data.info);
                     this.roles = response.data.info;
+                });
+            },
+
+            user(){
+                axios.get(`/api/get_auth_user/${this.auth_id}`)
+                .then(response => {
+                    // console.log(response.data.info);
+                    this.auth_user = response.data.user;
+                    this.role = response.data.role;
+                    this.permissions = response.data.permissions;
+
+                    // console.log(response);
+                    this.checkPermission();
+                });
+
+
+            },
+
+            checkPermission(){
+
+                this.permissions.forEach((item) => {
+
+                    console.log(item);
+
+                    if(item.name == 'role-create'){
+                        this.create = true;
+                    }
+
+                    if(item.name == 'role-edit'){
+                        this.edit = true;
+                    }
+
+                    if(item.name == 'role-delete'){
+                        this.del = true;
+                    }
                 });
             },
 
@@ -106,6 +149,7 @@
 
         created(){
             this.index();
+            this.user();
         }
     }
 </script>

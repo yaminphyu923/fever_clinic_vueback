@@ -57,6 +57,7 @@
 
                 date: "",
                 progress: {
+                    id: "",
                     patient_id: "",
                     progress_note: "",
                     user_id: "",
@@ -95,14 +96,14 @@
                 }
 
                 let formData = new FormData();
-
+                formData.append('id', this.progress.id);
                 formData.append('patient_id', this.id);
                 formData.append('progress_note', this.progress.progress_note);
                 // this.progress.user_id = this.auth_id;
                 formData.append('user_id', this.progress.user_id);
                 axios.post(`/api/progress-update/`,formData,config)
                 .then(response => {
-                    console.log(response);
+                    console.log(response.data.info);
                      Toast.fire({
                         icon: 'success',
                         title: 'Updating successfully'

@@ -3,5 +3,5 @@
 @section('title','Medical List')
 
 @section('content')
-    <medicallist-component :auth_user={{$auth_user}}></medicallist-component>
+    <medicallist-component :auth_id={{$auth_id}}></medicallist-component>
 @endsection

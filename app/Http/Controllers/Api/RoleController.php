@@ -32,18 +32,18 @@ class RoleController extends Controller
 
     public function rolePaginate(Request $request){
         if($request->search){
-            $roles = Role::where('name','like','%'.$request->search.'%')->latest('id')->paginate(10);
+            $roles = Role::where('name','like','%'.$request->search.'%')->where('name','!=','superadmin')->latest('id')->paginate(10);
             return ApiResponse::success('Success',$roles);
         }
         else{
-            $roles = Role::latest('id')->paginate(10);
+            $roles = Role::where('name','!=','superadmin')->latest('id')->paginate(10);
             return ApiResponse::success('Success',$roles);
         }
     }
 
     public function roleData()
     {
-        $roles = Role::select('id','name as text')->get()->toArray();
+        $roles = Role::where('name','!=','superadmin')->select('id','name as text')->get()->toArray();
         return response()->json($roles);
     }
 

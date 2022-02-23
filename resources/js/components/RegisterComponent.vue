@@ -57,7 +57,7 @@
                                <label for="" class="col-sm-2 offset-sm-2">Role</label>
 
                                <div class="col-sm-6">
-                                   <Select2 v-model="user.role" :options="roles" :settings="{ settingOption: roles.text, settingOption: roles.text }" />
+                                   <Select2 v-model="user.role" :options="roles" :settings="{ settingOption: roles.text, settingOption: roles.text }"/>
                                    <!-- <select v-model="user.role" class="form-control">
 
                                        <option value="ms">MS</option>
@@ -118,7 +118,9 @@
             role(){
                 axios.get('/api/roleData')
                 .then(response => {
+
                     this.roles = response.data;
+
                 })
             },
 

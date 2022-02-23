@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Bed;
 use App\Models\Patient;
+use App\Models\Summary;
 use App\Models\Hospital;
 use App\Helpers\ApiResponse;
 use Illuminate\Http\Request;
@@ -22,11 +24,17 @@ class HospitalController extends Controller
     }
 
     public function detailPatientHospital($patient_id){
-        $hospital = Hospital::with('patient')
+        $hospital = Hospital::with('patient','doctor','doctorIncharge')
                             ->where('patient_id',$patient_id)
                             ->latest('id')->paginate(10);
         return ApiResponse::success('successful',$hospital);
+    }
 
+    public function detailHospitalPrint($patient_id){
+        $hospital = Hospital::with('patient','doctor','doctorIncharge','bed')
+                            ->where('patient_id',$patient_id)
+                            ->latest('id')->get();
+        return ApiResponse::success('successful',$hospital);
     }
 
     /**
@@ -87,6 +95,18 @@ class HospitalController extends Controller
             $patient->refer = $request->refer_to;
             $patient->user_id = $patient->user_id;
             $patient->save();
+        }
+
+        if($request->bed_id != null){
+            $summary = new Summary;
+            $summary->bed_id = $request->bed_id;
+            $summary->date = $request->date;
+            $summary->user_id = $request->user_id;
+            $summary->save();
+
+            $bed = Bed::find($request->bed_id);
+            $bed->status = 1;
+            $bed->save();
         }
 
         DB::commit();

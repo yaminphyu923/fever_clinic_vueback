@@ -37,9 +37,7 @@
                     <div class="form-group row">
                         <label for="" class="col-sm-4"><b>Bed</b></label>
                         <div class="col-sm-8">
-                            <select name="bed_id" id="bed_id" v-model="hospitals.bed_id" class="form-control">
-                                <option value="">1</option>
-                            </select>
+                            <Select2 v-model="hospitals.bed_id" :options="beds" :settings="{ settingOption: beds.text + beds.room_name, settingOption: beds.text + beds.room_name }"/>
                         </div>
                     </div>
                 </div>
@@ -294,6 +292,8 @@
                 patients: [],
 
                 doctors: [],
+
+                beds: [],
             }
         },
         methods: {
@@ -308,6 +308,25 @@
                 axios.get('/api/doctorData')
                 .then(response => {
                     this.doctors = response.data;
+                })
+            },
+
+            bed(){
+                axios.get('/api/bedData')
+                .then(response => {
+                    //console.log(response.data);
+                    //this.beds = response.data;
+
+                    response.data.forEach(item => {
+
+                        this.beds.push({
+                            id : item.id,
+                            text : item.text + '/ ' + item.room_name + '/ ' + item.floor_name + '/ ' + item.building_name,
+                        });
+
+                    })
+
+                    //console.log(this.beds);
                 })
             },
 
@@ -343,6 +362,7 @@
 
             this.patient();
             this.doctor();
+            this.bed();
             this.edit();
         }
     }

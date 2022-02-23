@@ -207,6 +207,7 @@
         methods: {
             onImageOneChange(e) {
                 this.images.image1 = e.target.files[0];
+                //console.log(this.images.image1);
             },
 
             onImageTwoChange(e) {
@@ -260,6 +261,7 @@
                 .then(response => {
 
                     this.images = response.data.info;
+                    console.log(this.images);
 
                 })
             },
@@ -273,6 +275,7 @@
 
                 let formData = new FormData();
 
+                formData.append('id', this.images.id);
                 formData.append('patient_id', this.id);
                 formData.append('doctor_id', this.images.doctor_id);
                 formData.append('date_requested', this.images.date_requested);
@@ -288,7 +291,7 @@
                 formData.append('user_id', this.images.user_id);
                 //console.log(this.images);
 
-                axios.put(`/api/imagings/${this.images.id}`,formData,config)
+                axios.post(`/api/imaging-update/`,formData,config)
                 .then(response => {
                     console.log(response.data.info);
                     Toast.fire({

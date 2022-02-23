@@ -7,14 +7,18 @@
 
             <div class="col-sm-12">
                 <a href="/patient-create"><button class="btn btn-md btn-primary"><b>Create</b></button></a>
-                <a href="/total-patient"><button class="btn btn-md btn-primary"><b>Patient List</b></button></a>
-                <a href="/doctors"><button class="btn btn-md btn-primary"><b>Doctors</b></button></a>
-                <!-- <a href="/hrmanagements"><button class="btn btn-sm btn-primary"><b>HR Management</b></button></a> -->
-                <!-- <a href="/disease"><button class="btn btn-sm btn-primary"><b>Disease</b></button></a> -->
-                <a href="/medical"><button class="btn btn-md btn-primary"><b>Medical List</b></button></a>
-                <a href="/lab"><button class="btn btn-md btn-primary"><b>Lab</b></button></a>
-                <a href="/edit-history"><button class="btn btn-md btn-primary"><b>Edit History</b></button></a>
-                <a href="/user"><button class="btn btn-md btn-primary"><b>User</b></button></a>
+                <a href="/total-patient"><button class="btn btn-md btn-primary" v-if="patient_list"><b>Patient List</b></button></a>
+                <a href="/doctors"><button class="btn btn-md btn-primary" v-if="doctor_list"><b>Doctors</b></button></a>
+                <a href="/hrmanagements"><button class="btn btn-md btn-primary"><b>HR Management</b></button></a>
+                <a href="/disease"><button class="btn btn-md btn-primary"><b>Disease</b></button></a>
+                <a href="/medical"><button class="btn btn-md btn-primary" v-if="medical_list"><b>Medical List</b></button></a>
+                <a href="/lab"><button class="btn btn-md btn-primary" v-if="lab_list"><b>Lab</b></button></a>
+                <a href="/edit-history"><button class="btn btn-md btn-primary" v-if="edit_history"><b>Edit History</b></button></a>
+                <a href="/user"><button class="btn btn-md btn-primary" v-if="user_list"><b>User</b></button></a>
+                <a href="/duty"><button class="btn btn-md btn-primary" v-if="duty_list"><b>Duty Roaster</b></button></a>
+                <a href="/bed"><button class="btn btn-md btn-primary" v-if="room_bed_list"><b>Room & Bed</b></button></a>
+                <a href="/donation"><button class="btn btn-md btn-primary" v-if="donation_list"><b>Donation</b></button></a>
+                <a href="/userGuide"><button class="btn btn-md btn-primary"><b>User Guide</b></button></a>
             </div>
 
             <div class="col-sm-12 my-5">
@@ -97,7 +101,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <a :href="'/detail-patient/' + patient.id"><button type="button" class="btn btn-sm btn-warning">Detail</button></a>
+                                    <a :href="'/detail-patient/' + patient.id"><button type="button" class="btn btn-sm btn-warning" v-if="patient_detail">Detail</button></a>
                                 </td>
                             </tr>
                         </tbody>
@@ -115,6 +119,8 @@
     export default {
         name: 'HomeComponent',
 
+        props: ['auth_id'],
+
         data(){
             return {
                 patients: {},
@@ -128,7 +134,27 @@
                 homeOut: {
                     out_patient: [],
                     out_date: [],
-                }
+                },
+
+                patient_list : false,
+
+                doctor_list : false,
+
+                user_list : false,
+
+                medical_list : false,
+
+                lab_list : false,
+
+                patient_detail : false,
+
+                edit_history : false,
+
+                duty_list : false,
+
+                room_bed_list : false,
+
+                donation_list : false,
             }
         },
 
@@ -140,6 +166,65 @@
                     this.patients = response.data.info;
                     console.log(this.patients);
                 })
+            },
+
+            user(){
+                axios.get(`/api/get_auth_user/${this.auth_id}`)
+                .then(response => {
+                    // console.log(response.data.info);
+                    this.auth_user = response.data.user;
+                    this.role = response.data.role;
+                    this.auth_permissions = response.data.permissions;
+
+                    console.log(this.auth_permissions);
+                    this.checkPermission();
+                });
+            },
+
+            checkPermission(){
+
+                this.auth_permissions.forEach((item) => {
+
+                    if(item.name == 'patient-list'){
+                        this.patient_list = true;
+                    }
+
+                    if(item.name == 'doctor-list'){
+                        this.doctor_list = true;
+                    }
+
+                    if(item.name == 'user-list'){
+                        this.user_list = true;
+                    }
+
+                    if(item.name == 'medical_list-list'){
+                        this.medical_list = true;
+                    }
+
+                    if(item.name == 'lab-list'){
+                        this.lab_list = true;
+                    }
+
+                    if(item.name == 'patient-detail'){
+                        this.patient_detail = true;
+                    }
+
+                    if(item.name == 'edit_history-list'){
+                        this.edit_history = true;
+                    }
+
+                    if(item.name == 'duty_roaster-list'){
+                        this.duty_list = true;
+                    }
+
+                    if(item.name == 'room_bed-list'){
+                        this.room_bed_list = true;
+                    }
+
+                    if(item.name == 'donation-list'){
+                        this.donation_list = true;
+                    }
+                });
             },
 
             formatDate(date) {
@@ -181,6 +266,7 @@
         },
         created(){
             this.index();
+            this.user();
         }
     }
 </script>

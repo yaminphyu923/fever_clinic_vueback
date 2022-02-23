@@ -4,9 +4,9 @@
             <div class="col-md-12">
                 <h4><b>Medical List</b></h4>
                 <a href="/"><button class="btn btn-md btn-danger float-right">Home</button></a>
-                <a href="/pre_medicine"><button class="btn btn-md btn-primary float-right mr-1">Prescriptive Medicine</button></a>
+                <a href="/pre_medicine"><button class="btn btn-md btn-primary float-right mr-1" v-if="medical_create">Prescriptive Medicine</button></a>
                 <a href="/medical/category"><button class="btn btn-md btn-primary float-right mr-1">Category</button></a>
-                <button class="btn btn-md btn-primary float-right mr-1" data-toggle="modal" data-target="#addMedical">Add Medical List</button>
+                <button class="btn btn-md btn-primary float-right mr-1" data-toggle="modal" data-target="#addMedical" v-if="medical_create">Add Medical List</button>
             </div>
 
             <div class="col-md-12">
@@ -112,9 +112,9 @@
                                 <th>{{(allmedical.medicalcategory != null)?allmedical.medicalcategory.name:"-"}}</th>
                                 <th>{{allmedical.note}}</th>
                                 <td>
-                                    <a :href="'/detail_medical/'+ allmedical.id"><button class="btn btn-sm btn-warning">👁 Detail</button></a>
+                                    <a :href="'/detail_medical/'+ allmedical.id"><button class="btn btn-sm btn-warning" v-if="medical_detail">👁 Detail</button></a>
 
-                                    <button class="btn btn-sm btn-danger" @click="destroy(allmedical.id)" v-if="auth_user.role != 'superadmin'">🗑 Delete</button>
+                                    <button class="btn btn-sm btn-danger" @click="destroy(allmedical.id)" v-if="medical_delete">🗑 Delete</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -134,7 +134,7 @@
     export default {
         name: 'MedicalListComponent',
 
-        props: ['auth_user'],
+        props: ['auth_id'],
 
         components: {Select2},
 
@@ -156,6 +156,14 @@
                 categories : [],
 
                 search: "",
+
+                medical_create : false,
+
+                medical_detail : false,
+
+                medical_delete : false,
+
+                medical_list : false,
             }
         },
 
@@ -190,25 +198,65 @@
                 return moment(date).format('DD-MMM-YYYY');
             },
 
-            // destroy(id){
-            //     Swal.fire({
-            //     title: 'Are you sure?',
-            //     icon: 'warning',
-            //     showCancelButton: true,
-            //     confirmButtonColor: '#3085d6',
-            //     cancelButtonColor: '#d33',
-            //     confirmButtonText: 'Delete'
-            //     }).then((result) => {
-            //         if (result.isConfirmed) {
-            //             axios.delete(`/api/degrees/${id}`)
-            //             .then(response => {
-            //                 this.index();
-            //                 Swal.fire({ title: 'Deleted!',icon: 'success', })
-            //             })
+            destroy(id){
+                Swal.fire({
+                title: 'Are you sure?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Delete'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        axios.delete(`/api/medical_lists/${id}`)
+                        .then(response => {
+                            this.index();
+                            Swal.fire({ title: 'Deleted!',icon: 'success', })
+                        })
 
-            //         }
-            //     })
-            // }
+                    }
+                })
+            },
+
+             user(){
+                axios.get(`/api/get_auth_user/${this.auth_id}`)
+                .then(response => {
+                    // console.log(response.data.info);
+                    this.auth_user = response.data.user;
+                    this.role = response.data.role;
+                    this.permissions = response.data.permissions;
+
+                    console.log(response);
+                    this.checkPermission();
+                });
+
+
+            },
+
+            checkPermission(){
+
+                this.permissions.forEach((item) => {
+
+                    console.log(item);
+
+                    if(item.name == 'medical_list-create'){
+                        this.medical_create = true;
+                    }
+
+                    if(item.name == 'medical_list-detail'){
+                        this.medical_detail = true;
+                    }
+
+                    if(item.name == 'medical_list-delete'){
+                        this.medical_delete = true;
+                    }
+
+                    if(item.name == 'medical_list-list'){
+                        this.medical_list = true;
+                    }
+
+                });
+            },
         },
 
         created(){
@@ -217,6 +265,7 @@
             this.formatDate();
 
             console.log(this.auth_user);
+            this.user();
         }
     }
 

@@ -3,5 +3,5 @@
 @section('title','Fever Clinic')
 
 @section('content')
-    <home-component></home-component>
+    <home-component :auth_id={{$auth_id}}></home-component>
 @endsection

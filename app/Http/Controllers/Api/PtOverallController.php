@@ -89,4 +89,11 @@ class PtOverallController extends Controller
     {
         //
     }
+
+    public function detailPtOverallPrint($patient_id){
+        $ptoveralls = PtOverall::with('patient')
+                            ->where('patient_id',$patient_id)
+                            ->latest('id')->get();
+        return ApiResponse::success('successful',$ptoveralls);
+    }
 }

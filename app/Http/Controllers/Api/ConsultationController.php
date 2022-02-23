@@ -82,4 +82,11 @@ class ConsultationController extends Controller
     {
         //
     }
+
+    public function detailConsultationPrint($patient_id){
+        $consultations = Consultation::with('patient')
+                            ->where('patient_id',$patient_id)
+                            ->latest('id')->get();
+        return ApiResponse::success('successful',$consultations);
+    }
 }

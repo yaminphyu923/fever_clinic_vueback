@@ -227,4 +227,11 @@ class TreatmentController extends Controller
     {
         //
     }
+
+    public function detailTreatmentPrint($patient_id){
+        $treatments = Treatment::with('patient','doctor','medicalList')
+                            ->where('patient_id',$patient_id)
+                            ->latest('id')->get();
+        return ApiResponse::success('successful',$treatments);
+    }
 }

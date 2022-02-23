@@ -20,6 +20,11 @@ class HRManagementController extends Controller
         return ApiResponse::success('Success',$hrs);
     }
 
+    public function HRData(){
+        $hrs = HRManagement::select('id','name as text')->get()->toArray();
+        return response()->json($hrs);
+    }
+
     public function hrPaginate(Request $request){
         if($request->search){
             $hrs = HRManagement::with('position')

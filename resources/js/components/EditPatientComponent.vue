@@ -245,6 +245,7 @@
             edit(){
                 axios.get(`/api/patients/${this.id}`)
                 .then(response => {
+                    console.log(response.data.info);
                     this.patients = response.data.info;
 
                 })

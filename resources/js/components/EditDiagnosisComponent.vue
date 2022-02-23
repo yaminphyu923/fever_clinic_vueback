@@ -21,7 +21,8 @@
                     <div class="form-group row">
                         <label for="" class="col-sm-4"><b>Diagnosis</b></label>
                         <div class="col-sm-8">
-                            <input type="text" name="diagnosis" id="diagnosis" v-model="diagnosis.diagnosis" class="form-control" autocomplete="off">
+                            <!-- <input type="text" v-model="diagnosis.diagnosis" class="form-control"> -->
+                            <Select2 v-model="diagnosis.diagnosis" :options="diseases" :settings="{ settingOption: diseases.text, settingOption: diseases.text }"/>
                         </div>
                     </div>
                 </div>
@@ -85,6 +86,8 @@
                     user_id: "",
                 },
                 patients: [],
+
+                diseases: [],
             }
         },
         methods: {
@@ -93,6 +96,14 @@
                 .then(response => {
                     this.patients = response.data;
                     // console.log(this.patients);
+                })
+            },
+
+            disease(){
+                axios.get('/api/diseaseData')
+                .then(response => {
+                    this.diseases = response.data;
+                    //console.log(this.patients);
                 })
             },
 
@@ -129,6 +140,7 @@
             this.date = date;
             this.patient();
             this.edit();
+            this.disease();
         }
     }
 </script>

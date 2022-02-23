@@ -63,30 +63,29 @@ class ProgressNoteController extends Controller
 
     public function progressUpdate(Request $request)
     {
-        $progress_note = $request->all();
-        $old_data = ProgressNote::where('id',$request->id)->first();
-        // if($old_data->progress_note != null){
-        //     if(file_exists(public_path('photos/progress_notes/'.$old_data->progress_note))){
+        $pro = $request->all();
+        $progress = ProgressNote::where('id',$request->id)->first();
+        if($progress->progress_note != null){
+            if(file_exists(public_path('photos/progress_notes/'.$progress->progress_note))){
 
-        //         unlink('photos/progress_notes/'.$old_data->progress_note);
+                unlink('photos/progress_notes/'.$progress->progress_note);
 
-        //     }
-        // }
+            }
+        }
 
-        // if($request->file("progress_note")) {
-        //     $file=$request->file("progress_note");
-        //     $filename=time().'_'.$file->getClientOriginalName();
-        //     $path=public_path('photos/progress_notes');
-        //     $file->move($path,$filename);
-        //     $old_data->progress_note = $filename;
-        // }
+        if($request->file("progress_note")) {
+            $file=$request->file("progress_note");
+            $filename=time().'_'.$file->getClientOriginalName();
+            $path=public_path('photos/progress_notes');
+            $file->move($path,$filename);
+            $progress->progress_note = $filename;
+        }
 
-        //     $progress = ProgressNote::where('id',$request->id)->first();
-        //     $progress->patient_id = $request->patient_id;
+            $progress->patient_id = $request->patient_id;
 
-        //     $progress->user_id = $request->user_id;
-        //     $progress->save();
-        return ApiResponse::success('Successful',$progress_note);
+            $progress->user_id = $request->user_id;
+            $progress->save();
+        return ApiResponse::success('Successful',$pro);
     }
 
     /**
@@ -133,5 +132,12 @@ class ProgressNoteController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function detailProgressPrint($patient_id){
+        $progrees = ProgressNote::with('patient')
+                            ->where('patient_id',$patient_id)
+                            ->latest('id')->get();
+        return ApiResponse::success('successful',$progrees);
     }
 }

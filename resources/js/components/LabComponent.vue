@@ -4,11 +4,11 @@
             <div class="col-md-12">
                 <h4 class="mb-3"><b>Lab List</b></h4>
                 <a href="/"><button class="btn btn-md btn-primary">Home</button></a>
-                <button class="btn btn-md btn-primary" data-toggle="modal" data-target="#addLab">Add Lab</button>
-                <a href="/lab_category"><button class="btn btn-md btn-primary">Lab Category</button></a>
-                <a href="/group"><button class="btn btn-md btn-primary">Group</button></a>
-                <a href="/labs-export"><button class="btn btn-md btn-primary">Export Excel</button></a>
-                <button class="btn btn-md btn-primary" data-toggle="modal" data-target="#addExcel">Import Excel</button>
+                <button class="btn btn-md btn-primary" data-toggle="modal" data-target="#addLab" v-if="lab_create">Add Lab</button>
+                <a href="/lab_category"><button class="btn btn-md btn-primary" v-if="lab_create">Lab Category</button></a>
+                <a href="/group"><button class="btn btn-md btn-primary" v-if="lab_create">Group</button></a>
+                <a href="/labs-export"><button class="btn btn-md btn-primary" v-if="lab_create">Export Excel</button></a>
+                <button class="btn btn-md btn-primary" data-toggle="modal" data-target="#addExcel" v-if="lab_create">Import Excel</button>
             </div>
 
             <div class="col-md-12 mt-5">
@@ -146,9 +146,9 @@
                                 <td>{{(all_lab.group != null)?all_lab.group.name:'-'}}</td>
                                 <td>{{(all_lab.lab_category != null)?all_lab.lab_category.name:'-'}}</td>
                                 <td>
-                                    <a :href="'/lab/'+all_lab.id"><button class="btn btn-sm btn-warning">Edit</button></a>
+                                    <a :href="'/lab/'+all_lab.id"><button class="btn btn-sm btn-warning" v-if="lab_edit">Edit</button></a>
 
-                                    <button class="btn btn-sm btn-danger" @click="destroy(all_lab.id)">Delete</button>
+                                    <button class="btn btn-sm btn-danger" @click="destroy(all_lab.id)" v-if="lab_delete">Delete</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -193,6 +193,13 @@
 
                 search: "",
                 // showModal: true,
+
+                lab_create: false,
+
+                lab_edit: false,
+
+                lab_delete: false,
+
             }
         },
 
@@ -281,13 +288,54 @@
                     }
                     window.location.reload();
                 })
-            }
+            },
+
+             user(){
+                axios.get(`/api/get_auth_user/${this.auth_id}`)
+                .then(response => {
+                    // console.log(response.data.info);
+                    this.auth_user = response.data.user;
+                    this.role = response.data.role;
+                    this.permissions = response.data.permissions;
+
+                    console.log(response);
+                    this.checkPermission();
+                });
+
+
+            },
+
+            checkPermission(){
+
+                this.permissions.forEach((item) => {
+
+                    console.log(item);
+
+                    if(item.name == 'lab-create'){
+                        this.lab_create = true;
+                    }
+
+                    if(item.name == 'lab-edit'){
+                        this.lab_edit = true;
+                    }
+
+                    if(item.name == 'lab-delete'){
+                        this.lab_delete = true;
+                    }
+
+                    if(item.name == 'lab-list'){
+                        this.lab_list = true;
+                    }
+
+                });
+            },
         },
 
         created(){
             this.group();
             this.labCategory();
             this.index();
+            this.user();
         }
     }
 </script>

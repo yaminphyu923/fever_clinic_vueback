@@ -4,9 +4,9 @@
             <div class="col-md-12">
                 <h4><b>Doctors List</b></h4>
                 <a href="/"><button class="btn btn-md btn-primary">Home</button></a>
-                <button class="btn btn-md btn-primary" data-toggle="modal" data-target="#addDoctor">Add Doctor</button>
-                <a href="/specialities"><button class="btn btn-md btn-primary">Speciality Record</button></a>
-                <a href="/degrees"><button class="btn btn-md btn-primary">Degree Record</button></a>
+                <button class="btn btn-md btn-primary" data-toggle="modal" data-target="#addDoctor" v-if="doctor_create">Add Doctor</button>
+                <a href="/specialities"><button class="btn btn-md btn-primary" v-if="doctor_create">Speciality Record</button></a>
+                <a href="/degrees"><button class="btn btn-md btn-primary" v-if="doctor_create">Degree Record</button></a>
 
             </div>
 
@@ -103,9 +103,9 @@
                                 <td>{{(alldoctor.degree != null)?alldoctor.degree.name:'-'}}</td>
                                 <td>{{(alldoctor.speciality != null)?alldoctor.speciality.name:'-'}}</td>
                                 <td>
-                                    <a :href="'/doctors/'+alldoctor.id"><button class="btn btn-sm btn-warning">Edit</button></a>
+                                    <a :href="'/doctors/'+alldoctor.id"><button class="btn btn-sm btn-warning" v-if="doctor_edit">Edit</button></a>
 
-                                    <button class="btn btn-sm btn-danger" @click="destroy(alldoctor.id)">Delete</button>
+                                    <button class="btn btn-sm btn-danger" @click="destroy(alldoctor.id)" v-if="doctor_delete">Delete</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -142,6 +142,11 @@
 
                 search: "",
                 // showModal: true,
+
+                doctor_list : "",
+                doctor_create : "",
+                doctor_edit : "",
+                doctor_delete : "",
             }
         },
 
@@ -215,12 +220,53 @@
                     }
                     window.location.reload();
                 })
-            }
+            },
+
+            user(){
+                axios.get(`/api/get_auth_user/${this.auth_id}`)
+                .then(response => {
+                    // console.log(response.data.info);
+                    this.auth_user = response.data.user;
+                    this.role = response.data.role;
+                    this.permissions = response.data.permissions;
+
+                    console.log(response);
+                    this.checkPermission();
+                });
+
+
+            },
+
+            checkPermission(){
+
+                this.permissions.forEach((item) => {
+
+                    console.log(item);
+
+                    if(item.name == 'doctor-create'){
+                        this.doctor_create = true;
+                    }
+
+                    if(item.name == 'doctor-edit'){
+                        this.doctor_edit = true;
+                    }
+
+                    if(item.name == 'doctor-delete'){
+                        this.doctor_delete = true;
+                    }
+
+                    if(item.name == 'doctor-list'){
+                        this.doctor_list = true;
+                    }
+
+                });
+            },
         },
 
         created(){
             this.index();
             this.doctor();
+            this.user();
         }
     }
 </script>

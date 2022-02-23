@@ -124,4 +124,11 @@ class PhyExaminationController extends Controller
     {
         //
     }
+
+    public function detailPhysicalPrint($patient_id){
+        $phy_examinations = PhyExamination::with('patient')
+                            ->where('patient_id',$patient_id)
+                            ->latest('id')->get();
+        return ApiResponse::success('successful',$phy_examinations);
+    }
 }

@@ -3,20 +3,23 @@
 namespace App\Http\Controllers\Api;
 
 use Carbon\Carbon;
+use App\Models\Bed;
 use App\Models\Patient;
+use App\Models\Hospital;
+use Barryvdh\DomPDF\PDF;
 use App\Helpers\ApiResponse;
 use Illuminate\Http\Request;
 use App\Exports\PatientsExport;
 use App\Imports\PatientsImport;
 use App\Exports\InPatientsExport;
 use App\Exports\OutPatientsExport;
+use Illuminate\Support\Collection;
 use App\Exports\ComoPatientsExport;
 use App\Exports\DeadPatientsExport;
 use App\Http\Controllers\Controller;
+use Illuminate\Pagination\Paginator;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ReferralPatientsExport;
-use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class PatientController extends Controller
@@ -131,6 +134,13 @@ class PatientController extends Controller
         $patient->dead_date = $request->dead_date;
         $patient->save();
 
+        if($id){
+            $hospital = Hospital::where('patient_id',$id)->first();
+
+            $bed = Bed::where('id',$hospital->bed_id)->first();
+            $bed->status = 0;
+            $bed->save();
+        }
         return ApiResponse::success('success',null);
     }
 
@@ -140,6 +150,14 @@ class PatientController extends Controller
         $patient->out_patient = $request->out_patient;
         $patient->out_date = $request->out_date;
         $patient->save();
+
+        if($id){
+            $hospital = Hospital::where('patient_id',$id)->first();
+
+            $bed = Bed::where('id',$hospital->bed_id)->first();
+            $bed->status = 0;
+            $bed->save();
+        }
 
         return ApiResponse::success('success',null);
     }
@@ -192,6 +210,7 @@ class PatientController extends Controller
         $patient->remark = $request->remark;
         $patient->date = $request->date;
         $patient->user_id = $request->user_id;
+        $patient->edit_history = 1;
         $patient->save();
 
         return ApiResponse::success('success',null);

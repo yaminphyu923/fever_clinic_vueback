@@ -257,4 +257,11 @@ class InvestigationController extends Controller
     {
         //
     }
+
+    public function detailInvestigationPrint($patient_id){
+        $investigations = Investigation::with('patient','doctor','group','labcategory')
+                            ->where('patient_id',$patient_id)
+                            ->latest('id')->get();
+        return ApiResponse::success('successful',$investigations);
+    }
 }

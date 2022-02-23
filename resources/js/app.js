@@ -14,7 +14,10 @@ import VModal from 'vue-js-modal';
 
 import moment from 'moment';
 
+import VueHtmlToPaper from 'vue-html-to-paper';
+
 Vue.use(VModal);
+// Vue.use(require('vue-moment'));
 
 // global.jQuery = require('jquery');
 // var $ = global.jQuery;
@@ -185,6 +188,8 @@ Vue.component('editpatientnav-component', require('./components/EditPatientNavCo
 
 Vue.component('editpatient-component', require('./components/EditPatientComponent.vue').default);
 
+Vue.component('editpat-component', require('./components/EditPatComponent.vue').default);
+
 Vue.component('edithospital-component', require('./components/EditHospitalComponent.vue').default);
 
 Vue.component('editpastmedical-component', require('./components/EditPastMedicalComponent.vue').default);
@@ -213,13 +218,55 @@ Vue.component('editimaging-component', require('./components/EditImagingComponen
 
 Vue.component('editconsultation-component', require('./components/EditConsultationComponent.vue').default);
 
+Vue.component('duty-component', require('./components/DutyRoasterComponent.vue').default);
+
+Vue.component('editduty-component', require('./components/EditDutyRoasterComponent.vue').default);
+
+Vue.component('hrduty-component', require('./components/HRDutyComponent.vue').default);
+
+Vue.component('edithrduty-component', require('./components/EditHRDutyComponent.vue').default);
+
+Vue.component('time-component', require('./components/TimeComponent.vue').default);
+
+Vue.component('edittime-component', require('./components/EditTimeComponent.vue').default);
+
+Vue.component('building-component', require('./components/BuildingComponent.vue').default);
+
+Vue.component('editbuilding-component', require('./components/EditBuildingComponent.vue').default);
+
+Vue.component('floor-component', require('./components/FloorComponent.vue').default);
+
+Vue.component('editfloor-component', require('./components/EditFloorComponent.vue').default);
+
+Vue.component('room-component', require('./components/RoomComponent.vue').default);
+
+Vue.component('bed-component', require('./components/BedComponent.vue').default);
+
+Vue.component('editbed-component', require('./components/EditBedComponent.vue').default);
+
+Vue.component('editroom-component', require('./components/EditRoomComponent.vue').default);
+
+Vue.component('roombednav-component', require('./components/RoomBedNavComponent.vue').default);
+
+Vue.component('donation-component', require('./components/DonationComponent.vue').default);
+
+Vue.component('expense-component', require('./components/ExpenseComponent.vue').default);
+
+Vue.component('remain-component', require('./components/RemainComponent.vue').default);
+
+Vue.component('summary-component', require('./components/SummaryComponent.vue').default);
+
+Vue.component('pdf-component', require('./components/PdfComponent.vue').default);
+
+Vue.component('userguide-component', require('./components/UserGuideComponent.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
- Vue.component('pagination', require('laravel-vue-pagination'));
+Vue.component('pagination', require('laravel-vue-pagination'));
 
 
 
@@ -230,14 +277,32 @@ const Toast = Swal.mixin({
     timer: 3000,
     timerProgressBar: true,
     didOpen: (toast) => {
-      toast.addEventListener('mouseenter', Swal.stopTimer)
-      toast.addEventListener('mouseleave', Swal.resumeTimer)
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
     }
 })
 
 window.Swal = Swal;
 window.Toast = Toast;
 window.moment = moment;
+
+const options = {
+    name: '_blank',
+    specs: [
+        'fullscreen=yes',
+        'titlebar=yes',
+        'scrollbars=yes'
+    ],
+    styles: [
+        'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css',
+        'https://unpkg.com/kidlat-css/css/kidlat.css'
+    ],
+    timeout: 1000, // default timeout before the print window appears
+    autoClose: false, // if false, the window will not close after printing
+    windowTitle: window.document.title, // override the window title
+}
+
+Vue.use(VueHtmlToPaper, options);
 
 
 const app = new Vue({

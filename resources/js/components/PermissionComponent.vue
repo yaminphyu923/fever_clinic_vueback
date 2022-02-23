@@ -10,7 +10,7 @@
                 <h4><b>Permission Management</b></h4>
             </div>
             <div class="col-md-6">
-                <a class="btn btn-success float-right" href="/create-permission"> Create New Permission</a>
+                <a class="btn btn-success float-right" href="/create-permission" v-if="create"> Create New Permission</a>
             </div>
 
             <div class="col-sm-12 mt-3">
@@ -43,9 +43,9 @@
                                 <td>{{index+1}}</td>
                                 <td>{{permission.name}}</td>
                                 <td>
-                                    <a :href="'/edit-permission/'+ permission.id"><button class="btn btn-sm btn-warning">Edit</button></a>
+                                    <a :href="'/edit-permission/'+ permission.id"><button class="btn btn-sm btn-warning" v-if="edit">Edit</button></a>
 
-                                    <button class="btn btn-sm btn-danger" @click="destroy(permission.id)">Delete</button>
+                                    <button class="btn btn-sm btn-danger" @click="destroy(permission.id)" v-if="del">Delete</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -62,11 +62,21 @@
     export default {
         name: 'RoleManagementComponent',
 
+        props : ['auth_id'],
+
         data(){
             return {
                 permissions :{},
 
+                auth_permissions : {},
+
                 search: "",
+
+                edit : false,
+
+                del : false,
+
+                create : false,
             }
         },
 
@@ -74,29 +84,41 @@
             index(page=1){
                 axios.get(`/api/permissionPaginate?page=${page}&search=${this.search}`)
                 .then(response => {
-                    // console.log(response.data.info);
+                    //console.log(response.data.info);
                     this.permissions = response.data.info;
                 });
             },
-            // store(){
-            //     this.degrees.user_id = this.auth_id;
-            //     axios.post('/api/createDegrees',this.degrees)
-            //         .then(response => {
-            //             this.index();
+            user(){
+                axios.get(`/api/get_auth_user/${this.auth_id}`)
+                .then(response => {
+                    // console.log(response.data.info);
+                    this.auth_user = response.data.user;
+                    this.role = response.data.role;
+                    this.auth_permissions = response.data.permissions;
 
-            //             this.degrees = {
-            //                 name:"",
-            //                 fullname: "",
-            //             }
+                    // console.log(response);
+                    this.checkPermission();
+                });
+            },
 
-            //             Toast.fire({
-            //                 icon: 'success',
-            //                 title: 'Creating successfully'
-            //             })
-            //         window.location.reload();
+            checkPermission(){
 
-            //     })
-            // },
+                this.auth_permissions.forEach((item) => {
+
+                    if(item.name == 'permission-create'){
+                        this.create = true;
+                    }
+
+                    if(item.name == 'permission-edit'){
+                        this.edit = true;
+                    }
+
+                    if(item.name == 'permission-delete'){
+                        this.del = true;
+                    }
+                });
+            },
+
             destroy(id){
                 Swal.fire({
                 title: 'Are you sure?',
@@ -122,6 +144,8 @@
 
         created(){
             this.index();
+
+            this.user();
         }
     }
 </script>

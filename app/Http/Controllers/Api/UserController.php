@@ -126,19 +126,10 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // $sql = User::find($id);
-        // $sql->name = $request->name;
-        // $sql->email = $request->email;
-        // $sql->password = Hash::make($request->password);
-        // $sql->sama = $request->sama;
-        // $sql->role = $request->role;
-        // $sql->status = $sql->status;
-        // $sql->save();
-
         $this->validate($request, [
             'name' => 'required',
             'email' => 'required|email|unique:users,email,'.$id,
-            'password' => 'same:confirm-password',
+            'password' => 'same:confirm_password',
             'role' => 'required'
         ]);
 

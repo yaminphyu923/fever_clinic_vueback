@@ -4,10 +4,10 @@
             <div class="col-md-12">
                 <h4><b>User List</b></h4>
                 <a href="/"><button class="btn btn-md btn-primary">Home</button></a>
-                <a href="/register-patient"><button class="btn btn-md btn-primary">Add New Account</button></a>
+                <a href="/register-patient"><button class="btn btn-md btn-primary" v-if="create == true">Add New Account</button></a>
                 <a href="/newlyregister-patient"><button class="btn btn-md btn-primary">Newly Register</button></a>
-                <a href="/role_management"><button class="btn btn-md btn-primary">Role Mangement</button></a>
-                <a href="/permission"><button class="btn btn-md btn-primary">Permission Mangement</button></a>
+                <a href="/role_management"><button class="btn btn-md btn-primary" v-if="role_create">Role Mangement</button></a>
+                <a href="/permission"><button class="btn btn-md btn-primary" v-if="per_create">Permission Mangement</button></a>
             </div>
 
             <div class="col-md-12 mt-3">
@@ -38,7 +38,8 @@
                         </thead>
 
                         <tbody>
-                            <tr v-for="(user,index) in users.data" :key="user.id">
+
+                            <tr v-for="(user,index) in users.data" :key="user.id" v-if="user.role.name != 'superadmin'">
                                 <td>{{index+1}}</td>
                                 <td>{{user.name}}</td>
                                 <td>{{user.email}}</td>
@@ -46,9 +47,11 @@
                                 <td>
                                     <a :href="'/edit_user/'+ user.id"><button class="btn btn-sm btn-warning" v-if="edit == true">Edit</button></a>
 
-                                    <button class="btn btn-sm btn-danger" @click="destroy(user.id)" v-if="del == true">Delete</button>
+                                    <button class="btn btn-sm btn-danger" @click="destroy(user.id)" v-if="del">Delete</button>
                                 </td>
+
                             </tr>
+
                         </tbody>
                     </table>
                 </div>
@@ -80,6 +83,12 @@
                 edit : false,
 
                 del : false,
+
+                create : false,
+
+                role_create : false,
+
+                per_create : false,
             }
         },
 
@@ -113,14 +122,26 @@
 
                     console.log(item);
 
-                    if(item.name == 'role-edit'){
+                    if(item.name == 'user-create'){
+                        this.create = true;
+                    }
+
+                    if(item.name == 'user-edit'){
                         this.edit = true;
                         console.log('edit');
                     }
 
-                    if(item.name == 'role-delete'){
+                    if(item.name == 'user-delete'){
                         this.del = true;
                         console.log('delete');
+                    }
+
+                    if(item.name == 'role-create'){
+                        this.role_create = true;
+                    }
+
+                    if(item.name == 'permission-create'){
+                        this.per_create = true;
                     }
                 });
             },

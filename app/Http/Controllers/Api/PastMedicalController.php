@@ -188,4 +188,11 @@ class PastMedicalController extends Controller
     {
         //
     }
+
+    public function detailPastPrint($patient_id){
+        $past_medicals = PastMedical::with('patient')
+                            ->where('patient_id',$patient_id)
+                            ->latest('id')->get();
+        return ApiResponse::success('successful',$past_medicals);
+    }
 }

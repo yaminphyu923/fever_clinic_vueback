@@ -103,6 +103,7 @@ class MedicalListController extends Controller
      */
     public function destroy($id)
     {
-        //
+        MedicalList::where('id',$id)->delete();
+        return ApiResponse::success("Successfully",null);
     }
 }

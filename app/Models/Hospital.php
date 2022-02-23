@@ -45,4 +45,8 @@ class Hospital extends Model
     public function doctorIncharge(){
         return $this->belongsTo(Doctor::class,'doctor_incharge_id','id');
     }
+
+    public function bed(){
+        return $this->belongsTo(Bed::class,'bed_id','id');
+    }
 }

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use PDF;
 use Illuminate\Http\Request;
+use App\Models\Patient;
 
 class HomeController extends Controller
 {
@@ -23,7 +25,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('layouts.home');
+        $auth_id = auth()->user()->id;
+        return view('layouts.home',compact('auth_id'));
     }
 
     public function patientCreate(){
@@ -97,8 +100,8 @@ class HomeController extends Controller
     }
 
     public function medicalList(){
-        $auth_user = auth()->user();
-        return view('layouts.medical_lists.medical_list',compact('auth_user'));
+        $auth_id = auth()->user()->id;
+        return view('layouts.medical_lists.medical_list',compact('auth_id'));
     }
 
     public function detailMedicalList(){
@@ -271,7 +274,8 @@ class HomeController extends Controller
     }
 
     public function roleManagement(){
-        return view('layouts.roles.role');
+        $auth_id = auth()->user()->id;
+        return view('layouts.roles.role',compact('auth_id'));
     }
 
     public function createRole(){
@@ -287,7 +291,8 @@ class HomeController extends Controller
     }
 
     public function permission(){
-        return view('layouts.permissions.permission');
+        $auth_id = auth()->user()->id;
+        return view('layouts.permissions.permission',compact('auth_id'));
     }
 
     public function createPermission(){
@@ -373,6 +378,11 @@ class HomeController extends Controller
         return view('layouts.edits.edit_patient',compact('auth_id'));
     }
 
+    public function editPat(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.edits.edit_pat',compact('auth_id'));
+    }
+
     public function editHospital(){
         $auth_id = auth()->user()->id;
         return view('layouts.edits.edit_hospital',compact('auth_id'));
@@ -436,6 +446,112 @@ class HomeController extends Controller
     public function editConsultation(){
         $auth_id = auth()->user()->id;
         return view('layouts.edits.edit_consultation',compact('auth_id'));
+    }
+
+    public function duty(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.duty_roasters.duty_roaster',compact('auth_id'));
+    }
+
+    public function hrDuty(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.duty_roasters.hrduty',compact('auth_id'));
+    }
+
+    public function time(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.duty_roasters.time',compact('auth_id'));
+    }
+
+    public function editTime(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.duty_roasters.edit_time',compact('auth_id'));
+    }
+
+    public function editDuty(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.duty_roasters.edit_duty_roaster',compact('auth_id'));
+    }
+
+    public function editHRDuty(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.duty_roasters.edit_hrduty',compact('auth_id'));
+    }
+
+    public function building(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.room_beds.building',compact('auth_id'));
+    }
+
+    public function editBuilding(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.room_beds.edit_building',compact('auth_id'));
+    }
+
+    public function floor(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.room_beds.floor',compact('auth_id'));
+    }
+
+    public function editFloor(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.room_beds.edit_floor',compact('auth_id'));
+    }
+
+    public function room(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.room_beds.room',compact('auth_id'));
+    }
+
+    public function editRoom(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.room_beds.edit_room',compact('auth_id'));
+    }
+
+    public function bed(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.room_beds.bed',compact('auth_id'));
+    }
+
+    public function editBed(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.room_beds.edit_bed',compact('auth_id'));
+    }
+
+    public function donation(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.donations.donation',compact('auth_id'));
+    }
+
+    public function expense(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.donations.expense',compact('auth_id'));
+    }
+
+    public function remain(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.donations.remain',compact('auth_id'));
+    }
+
+    public function summary(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.room_beds.summary',compact('auth_id'));
+    }
+
+    public function pdf(){
+        $auth_id = auth()->user()->id;
+        return view('layouts.pdf',compact('auth_id'));
+    }
+
+    public function createPDF($id) {
+        $patients = Patient::find($id);
+        $pdf = PDF::loadView('layouts.pdf',compact('patients'))
+                    ->setOptions(['defaultFont' => 'sans-serif']);;
+        return $pdf->stream();
+    }
+
+    public function userGuide(){
+        return view('layouts.user_guide');
     }
 
 }
