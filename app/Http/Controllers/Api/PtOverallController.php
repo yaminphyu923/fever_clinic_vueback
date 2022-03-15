@@ -58,13 +58,13 @@ class PtOverallController extends Controller
 
     public function ptOverallUpdate(Request $request){
         $ptoveralls = $request->all();
-        foreach ($request->all() as $data){
-            $additional['patient_id'] = $ptoveralls[0]['patient_id'];
-            $additional['date'] = $ptoveralls[0]['date'];
-            $additional['text'] = $data['text'];
-            $update_additional = PtOverall::where('id',$data['id'])->update($additional);
-        }
-        return ApiResponse::success("Successful", null);
+        // foreach ($request->all() as $data){
+            $additional['patient_id'] = $ptoveralls['patient_id'];
+            $additional['date'] = $ptoveralls['date'];
+            $additional['text'] = $ptoveralls['text'];
+            $update_additional = PtOverall::where('id',$ptoveralls['id'])->update($additional);
+        // }
+        return ApiResponse::success("Successful", $ptoveralls);
     }
 
     /**

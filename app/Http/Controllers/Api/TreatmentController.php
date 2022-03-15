@@ -109,62 +109,63 @@ class TreatmentController extends Controller
     public function treatmentUpdate(Request $request)
     {
 
-        // DB::beginTransaction();
-        // try{
+        DB::beginTransaction();
+        try{
             $treatments = $request->all();
-            foreach ($request->all() as $data){
-                $additional['patient_id'] = $treatments[0]['patient_id'];
-                $additional['note'] = $treatments[0]['note'];
-                $additional['doctor_id'] = $treatments[0]['doctor_id'];
-                $additional['pharmacy'] = $treatments[0]['pharmacy'];
-                $additional['pre_date'] = $treatments[0]['pre_date'];
-                $additional['queue'] = $treatments[0]['queue'];
-                $additional['medical_list_id'] = $data['medical_list_id'];
-                $additional['dose'] = $data['dose'];
-                $additional['frequency'] = $data['frequency'];
-                $additional['start_date'] = $data['start_date'];
-                $additional['end_date'] = $data['end_date'];
-                $additional['remark'] = $data['remark'];
-                $additional['user_id'] = $treatments[0]['user_id'];
+            // foreach ($request->all() as $data){
+                $additional['patient_id'] = $treatments['patient_id'];
+                $additional['note'] = $treatments['note'];
+                $additional['doctor_id'] = $treatments['doctor_id'];
+                $additional['pharmacy'] = $treatments['pharmacy'];
+                $additional['pre_date'] = $treatments['pre_date'];
+                $additional['queue'] = $treatments['queue'];
+                $additional['medical_list_id'] = $treatments['medical_list_id'];
+                $additional['dose'] = $treatments['dose'];
+                $additional['frequency'] = $treatments['frequency'];
+                $additional['start_date'] = $treatments['start_date'];
+                $additional['end_date'] = $treatments['end_date'];
+                $additional['remark'] = $treatments['remark'];
+                $additional['user_id'] = $treatments['user_id'];
 
-                $update_additional = Treatment::where('id',$data['id'])->update($additional);
+                $update_additional = Treatment::where('id',$treatments['id'])->update($additional);
 
 
-                $pre = PrescriptiveMedicine::where('id',$data['medicine_id'])
+                $pre = PrescriptiveMedicine::where('id',$treatments['medical_list_id'])
                                             ->first();
 
                 if($pre){
-                // $pre->date = $data->pre_date;
-                $pre->patient_id = $treatments[0]['patient_id'];
-                // $pre->doctor_id = $data->doctor_id;
-                $pre->medical_list_id = $data['medical_list_id'];
-                // $pre->status = 0;
-                // $pre->user_id = $request->user_id;
+
+                $pre->patient_id = $treatments['patient_id'];
+
+                $pre->medical_list_id = $treatments['medical_list_id'];
+
                 $pre->save();
                 }
-            }
+            // }
+            DB::commit();
+            return ApiResponse::success("Successful",$treatments);
 
-            return ApiResponse::success("Successful",null);
+            // return response()->json($request->all());
 
-            // $pre = PrescriptiveMedicine::where('medical_list_id',$request->medical_list_id);
-            // $pre->date = $request->pre_date;
-            // $pre->patient_id = $request->patient_id;
-            // $pre->doctor_id = $request->doctor_id;
-            // $pre->medical_list_id = $request->get('medical_list_id')[$i];
-            // $pre->status = 0;
-            // $pre->user_id = $request->user_id;
-            // $pre->save();
+            // // $pre = PrescriptiveMedicine::where('medical_list_id',$request->medical_list_id);
+            // // $pre->date = $request->pre_date;
+            // // $pre->patient_id = $request->patient_id;
+            // // $pre->doctor_id = $request->doctor_id;
+            // // $pre->medical_list_id = $request->get('medical_list_id')[$i];
+            // // $pre->status = 0;
+            // // $pre->user_id = $request->user_id;
+            // // $pre->save();
 
 
-            //DB::commit();
+            // DB::commit();
 
             // return response()->json($data[0]['medical_list_id']);
 
 
-        // }catch(\Exception $error){
-        //     DB::rollBack();
-        //     return ApiResponse::fail("Something Wrong",$error->getMessage());
-        // }
+        }catch(\Exception $error){
+            DB::rollBack();
+            return ApiResponse::fail("Something Wrong",$error->getMessage());
+        }
     }
 
     public function update(Request $request, $id)

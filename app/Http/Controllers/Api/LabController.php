@@ -118,12 +118,14 @@ class LabController extends Controller
     public function labExport()
     {
         return Excel::download(new LabsExport, 'labs.xlsx');
+        // $excel = Excel::download(new LabsExport, 'labs.xlsx');
+        // return ApiResponse::success('Successful',$excel);
     }
 
     public function importFile(Request $request)
     {
         Excel::import(new LabsImport, $request->file('labFile')->store('temp'));
-        return back();
+        return response()->json('success');
     }
 
     public function sortByName(){

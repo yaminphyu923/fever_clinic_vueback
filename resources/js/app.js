@@ -16,6 +16,8 @@ import moment from 'moment';
 
 import VueHtmlToPaper from 'vue-html-to-paper';
 
+var cors = require('cors')
+
 Vue.use(VModal);
 // Vue.use(require('vue-moment'));
 
@@ -304,6 +306,7 @@ const options = {
 
 Vue.use(VueHtmlToPaper, options);
 
+Vue.use(cors({ origin: ['http://localhost:8001/'], }))
 
 const app = new Vue({
     el: '#app',

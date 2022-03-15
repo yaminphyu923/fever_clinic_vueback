@@ -255,8 +255,6 @@
     export default {
         name: 'EditHospitalComponent',
 
-        props: ['auth_id'],
-
         components: {Select2},
 
         data(){
@@ -333,6 +331,7 @@
             edit(){
                 axios.get(`/api/hospitals/${this.hospital_id}`)
                 .then(response => {
+                    //console.log(response.data.info);
                     this.hospitals = response.data.info;
 
                 })

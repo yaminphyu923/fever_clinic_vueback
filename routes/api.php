@@ -2,8 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Api\BedController;
 use App\Http\Controllers\Api\LabController;
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\DeadController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\RoomController;
@@ -61,6 +63,16 @@ use App\Http\Controllers\Api\PrescriptiveMedicineController;
 //     return $request->user();
 // });
 
+Route::group([
+    'middleware' => 'api',
+], function ($router) {
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/refresh', [AuthController::class, 'refresh']);
+    Route::get('/user-profile', [AuthController::class, 'userProfile']);
+});
+
 Route::get('get_auth_user/{auth_id}',[UserController::class,'getAuth']);
 
 Route::get('degrees',[DegreeController::class,'index']);
@@ -88,6 +100,8 @@ Route::post('createSpecialities',[SpecialityController::class,'store']);
 Route::delete('specialities/{id}',[SpecialityController::class,'destroy']);
 
 Route::get('doctors',[DoctorController::class,'index']);
+
+Route::get('doctors/{id}',[DoctorController::class,'edit']);
 
 Route::get('doctors_paginate',[DoctorController::class,'doctorPaginate']);
 
@@ -184,6 +198,8 @@ Route::get('labs_paginate',[LabController::class, 'labPaginate']);
 Route::get('labs_group',[LabController::class, 'labGroup']);
 
 Route::get('labs_sortName',[LabController::class, 'sortByName']);
+
+Route::get('labs-export', [LabController::class, 'labExport'])->name('lab-export');
 
 Route::apiResource('lab_categories',LabCategoryController::class);
 
@@ -351,10 +367,24 @@ Route::post('importFile',[LabController::class, 'importFile']);
 
 Route::post('totalPatient',[PatientController::class, 'totalPatientImport']);
 
-// Route::get('/createPDF', [PatientController::class, 'createPDF']);
+Route::get('totalpatient-export', [PatientController::class, 'totalPatientExport'])->name('totalpatient-export');
+
+Route::get('inpatient-export', [PatientController::class, 'inPatientExport'])->name('inpatient-export');
+
+Route::get('outpatient-export', [PatientController::class, 'outPatientExport'])->name('outpatient-export');
+
+Route::get('deadpatient-export', [PatientController::class, 'deadPatientExport'])->name('deadpatient-export');
+
+Route::get('comopatient-export', [PatientController::class, 'comoPatientExport'])->name('comopatient-export');
+
+Route::get('referralpatient-export', [PatientController::class, 'referralPatientExport'])->name('referralpatient-export');
+
+Route::get('/createPDF/{id}', [HomeController::class, 'createPDF']);
 
 
 
 // Search
 
 Route::get('/searchTotalDate',[PatientController::class,'searchTotalDate']);
+
+Route::get('/currentBed/{hospital_id}',[BedController::class,'currentBed']);

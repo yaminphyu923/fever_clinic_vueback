@@ -65,6 +65,17 @@ class BedController extends Controller
         return response()->json($beds);
     }
 
+    public function currentBed($hospital_id){
+        $bed = Bed::join('rooms','rooms.id','=','beds.room_id')
+                    ->join('floors','floors.id','=','beds.floor_id')
+                    ->join('buildings','buildings.id','=','beds.building_id')
+                    ->join('hospitals','hospitals.bed_id','=','beds.id')
+                    ->where('hospitals.id',$hospital_id)
+                    ->select('beds.id','beds.name as text','rooms.name as room_name','floors.name as floor_name','buildings.name as building_name')
+                    ->first()->toArray();
+        return response()->json($bed);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

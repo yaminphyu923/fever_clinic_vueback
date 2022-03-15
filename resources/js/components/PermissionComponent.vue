@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <a href="/"><button class="btn btn-md btn-primary">Home</button></a>
+                <a href="/home"><button class="btn btn-md btn-primary">Home</button></a>
                 <a href="/user"><button class="btn btn-md btn-primary">Back</button></a>
             </div>
 

@@ -14,10 +14,7 @@ class InPatientsExport implements FromCollection, WithHeadings, ShouldAutoSize
     */
     public function collection()
     {
-        return Patient::whereNull('out_patient')
-                        ->orWhereNull('out_date')
-                        ->orWhereNull('dead')
-                        ->orWhereNull('dead_date')
+        return Patient::whereNull(['out_patient','out_date','dead','dead_date'])
                         ->select('name','gender','age','dob','nrc','phone','address','nextKin','attendent','occupation','symptoms','travelHistory','remark','date')
                         ->get();
     }

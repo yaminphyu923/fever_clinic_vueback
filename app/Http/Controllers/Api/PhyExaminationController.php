@@ -111,7 +111,7 @@ class PhyExaminationController extends Controller
         $phy_examination->user_id = $request->user_id;
         $phy_examination->save();
 
-        return ApiResponse::success('Successful',null);
+        return ApiResponse::success('Successful',$phy_examination);
     }
 
     /**

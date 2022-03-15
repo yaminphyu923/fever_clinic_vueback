@@ -37,10 +37,10 @@ class ProgressNoteController extends Controller
 
         $progress = new ProgressNote;
         $progress->patient_id = $request->patient_id;
-        $progress->progress_note = $filename;
+        $progress->progress_note = isset($filename)?$filename:null;
         $progress->user_id = $request->user_id;
         $progress->save();
-        return ApiResponse::success('Successful',null);
+        return ApiResponse::success('Successful',$progress);
     }
 
     /**
@@ -85,7 +85,7 @@ class ProgressNoteController extends Controller
 
             $progress->user_id = $request->user_id;
             $progress->save();
-        return ApiResponse::success('Successful',$pro);
+        return response()->json($request->id);
     }
 
     /**

@@ -54,7 +54,7 @@ class SpecialityController extends Controller
         $speciality->code = $request->code;
         $speciality->user_id = $request->user_id;
         $speciality->save();
-        return ApiResponse::success('Successful',null);
+        return ApiResponse::success('Successful',$speciality);
     }
 
     /**

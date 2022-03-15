@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Investigation;
 use Image;
 use App\Http\Controllers\Controller;
+use File;
 
 class InvestigationController extends Controller
 {
@@ -32,8 +33,13 @@ class InvestigationController extends Controller
             "patient_id" => "required",
         ]);
 
+        $abc = [];
+
+
             if($request->file("image")) {
+                // $file = $request->image->store('photos/investigations');
                 $file=$request->file("image");
+                // $filename=time().'.png';
                 $filename=time().'_'.$file->getClientOriginalName();
                 $path=public_path('photos/investigations');
                 $img = Image::make($file->path());
@@ -41,6 +47,11 @@ class InvestigationController extends Controller
                 $const->aspectRatio();
             })->save($path.'/'.$filename);
         }
+        // else{
+        //     $abc = 'No';
+        // }
+
+
 
         // $data = $request->all();
         // return response()->json($data);
@@ -62,9 +73,7 @@ class InvestigationController extends Controller
             $sql->date_analysis = $request->date_analysis ;
             $sql->doctor_test = $request->doctor_test ;
             $sql->queue = $request->queue;
-            if($request->hasfile('image')){
-                $sql->image = $filename;
-            }
+            $sql->image = isset($filename)?$filename:null;
 
             $sql->exam_request = $request->exam_request;
             $sql->note = $request->note;
@@ -86,11 +95,14 @@ class InvestigationController extends Controller
 
             $sql->user_id = $request->user_id;
             $sql->save();
-
+            $abc[] = $sql;
         }
 
+        // $all = $request->all();
 
-        return ApiResponse::success('Success',null);
+
+
+        return ApiResponse::success('Success',$abc);
     }
 
     /**
@@ -123,8 +135,8 @@ class InvestigationController extends Controller
 
     public function investigationUpdate(Request $request){
 
-        $investigations = $request->all();
-        $invest = Investigation::where('id',$investigations['id'])->first();
+        // $investigations = $request->all();
+        $invest = Investigation::where('id',$request->id)->first();
         if($invest->image != null){
             if(file_exists(public_path('photos/investigations/'.$invest->image))){
 
@@ -146,27 +158,27 @@ class InvestigationController extends Controller
         $invest->image = $filename;
     }
 
-            $invest->patient_id = $investigations['patient_id'];
-            $invest->doctor_id = $investigations['doctor_id'];
-            $invest->date_requested = $investigations['date_requested'];
-            $invest->date_analysis = $investigations['date_analysis'];
-            $invest->doctor_test = $investigations['doctor_test'];
-            $invest->queue = $investigations['queue'];
+            $invest->patient_id = $request['patient_id'];
+            $invest->doctor_id = $request['doctor_id'];
+            $invest->date_requested = $request['date_requested'];
+            $invest->date_analysis = $request['date_analysis'];
+            $invest->doctor_test = $request['doctor_test'];
+            $invest->queue = $request['queue'];
 
-            $invest->exam_request = $investigations['exam_request'];
-            $invest->note = $investigations['note'];
-            $invest->value = $investigations['value'];
-            $invest->remark = $investigations['remark'];
-            $invest->lab_name = $investigations['lab_name'];
-            $invest->lab_unit = $investigations['lab_unit'];
-            $invest->lab_range = $investigations['lab_range'];
-            $invest->group_id = $investigations['group_id'];
-            $invest->labcategory_id = $investigations['labcategory_id'];
-            $invest->user_id = $investigations['user_id'];
+            $invest->exam_request = $request['exam_request'];
+            $invest->note = $request['note'];
+            $invest->value = $request['value'];
+            $invest->remark = $request['remark'];
+            $invest->lab_name = $request['lab_name'];
+            $invest->lab_unit = $request['lab_unit'];
+            $invest->lab_range = $request['lab_range'];
+            $invest->group_id = $request['group_id'];
+            $invest->labcategory_id = $request['labcategory_id'];
+            $invest->user_id = $request['user_id'];
 
             $invest->save();
 
-        return ApiResponse::success('Successful',$investigations);
+        return ApiResponse::success('Successful',$request->all());
     }
 
     public function update(Request $request, $id)

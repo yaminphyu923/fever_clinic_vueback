@@ -156,46 +156,63 @@ class ImagingController extends Controller
         $image = $request->all();
 
         $old_data = Imaging::where('id',$request->id)->first();
-        if($old_data->image1 != null){
-            if(file_exists(public_path('photos/imagings/imaging_one/'.$old_data->image1))){
+        if($request->file("image1")) {
+            if($old_data->image1 != null){
+                if(file_exists(public_path('photos/imagings/imaging_one/'.$old_data->image1))){
 
-                unlink('photos/imagings/imaging_one/'.$old_data->image1);
+                    unlink('photos/imagings/imaging_one/'.$old_data->image1);
 
+                }
             }
         }
-        if($old_data->image2 != null){
-            if(file_exists(public_path('photos/imagings/imaging_two/'.$old_data->image2))){
 
-                unlink('photos/imagings/imaging_two/'.$old_data->image2);
+        if($request->file("image2")) {
+            if($old_data->image2 != null){
+                if(file_exists(public_path('photos/imagings/imaging_two/'.$old_data->image2))){
 
+                    unlink('photos/imagings/imaging_two/'.$old_data->image2);
+
+                }
             }
         }
-        if($old_data->image3 != null){
-            if(file_exists(public_path('photos/imagings/imaging_three/'.$old_data->image3))){
 
-                unlink('photos/imagings/imaging_three/'.$old_data->image3);
+        if($request->file("image3")) {
+            if($old_data->image3 != null){
+                if(file_exists(public_path('photos/imagings/imaging_three/'.$old_data->image3))){
 
+                    unlink('photos/imagings/imaging_three/'.$old_data->image3);
+
+                }
             }
         }
-        if($old_data->image4 != null){
-            if(file_exists(public_path('photos/imagings/imaging_four/'.$old_data->image4))){
 
-                unlink('photos/imagings/imaging_four/'.$old_data->image4);
+        if($request->file("image4")) {
+            if($old_data->image4 != null){
+                if(file_exists(public_path('photos/imagings/imaging_four/'.$old_data->image4))){
 
+                    unlink('photos/imagings/imaging_four/'.$old_data->image4);
+
+                }
             }
         }
-        if($old_data->image5 != null){
-            if(file_exists(public_path('photos/imagings/imaging_five/'.$old_data->image5))){
 
-                unlink('photos/imagings/imaging_five/'.$old_data->image5);
+        if($request->file("image5")) {
+            if($old_data->image5 != null){
+                if(file_exists(public_path('photos/imagings/imaging_five/'.$old_data->image5))){
 
+                    unlink('photos/imagings/imaging_five/'.$old_data->image5);
+
+                }
             }
         }
-        if($old_data->image6 != null){
-            if(file_exists(public_path('photos/imagings/imaging_six/'.$old_data->image6))){
 
-                unlink('photos/imagings/imaging_six/'.$old_data->image6);
+        if($request->file("image6")) {
+            if($old_data->image6 != null){
+                if(file_exists(public_path('photos/imagings/imaging_six/'.$old_data->image6))){
 
+                    unlink('photos/imagings/imaging_six/'.$old_data->image6);
+
+                }
             }
         }
 

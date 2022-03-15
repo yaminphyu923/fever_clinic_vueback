@@ -3,8 +3,20 @@
 namespace App\Http\Controllers;
 
 use PDF;
-use Illuminate\Http\Request;
+use App\Models\Dead;
+use App\Models\Imaging;
 use App\Models\Patient;
+use App\Models\Hospital;
+use App\Models\Diagnosis;
+use App\Models\Discharge;
+use App\Models\PtOverall;
+use App\Models\Treatment;
+use App\Models\Monitoring;
+use App\Models\PastMedical;
+use App\Models\Consultation;
+use Illuminate\Http\Request;
+use App\Models\Investigation;
+use App\Models\PhyExamination;
 
 class HomeController extends Controller
 {
@@ -13,10 +25,10 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('auth');
+    // }
 
     /**
      * Show the application dashboard.
@@ -545,9 +557,21 @@ class HomeController extends Controller
 
     public function createPDF($id) {
         $patients = Patient::find($id);
-        $pdf = PDF::loadView('layouts.pdf',compact('patients'))
+        $hospitals = Hospital::where('patient_id',$id)->latest('id')->get();
+        $pasts = PastMedical::where('patient_id',$id)->latest('id')->get();
+        $phy_examinations = PhyExamination::where('patient_id',$id)->latest('id')->get();
+        $diagnoses = Diagnosis::where('patient_id',$id)->latest('id')->get();
+        $investigations = Investigation::where('patient_id',$id)->latest('id')->get();
+        $treatments = Treatment::where('patient_id',$id)->latest('id')->get();
+        $deads = Dead::where('patient_id',$id)->latest('id')->get();
+        $discharges = Discharge::where('patient_id',$id)->latest('id')->get();
+        $ptoveralls = PtOverall::where('patient_id',$id)->latest('id')->get();
+        $monitorings = Monitoring::where('patient_id',$id)->latest('id')->get();
+        $imagings = Imaging::where('patient_id',$id)->latest('id')->get();
+        $consultations = Consultation::where('patient_id',$id)->latest('id')->get();
+        $pdf = PDF::loadView('layouts.pdf',compact('patients','hospitals','pasts','phy_examinations','diagnoses','investigations','treatments','deads','discharges','ptoveralls','monitorings','imagings','consultations'))
                     ->setOptions(['defaultFont' => 'sans-serif']);;
-        return $pdf->stream();
+        return $pdf->download();
     }
 
     public function userGuide(){

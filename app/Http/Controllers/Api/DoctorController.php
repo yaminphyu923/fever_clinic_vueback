@@ -29,7 +29,7 @@ class DoctorController extends Controller
 
     public function doctorPaginate(Request $request){
         if($request->search){
-            $doctors = Doctor::where('name','like','%'.$request->search.'%')->latest('id')->paginate(10);
+            $doctors = Doctor::with('degree')->with('speciality')->where('name','like','%'.$request->search.'%')->latest('id')->paginate(10);
             return ApiResponse::success('Success',$doctors);
         }
         else{

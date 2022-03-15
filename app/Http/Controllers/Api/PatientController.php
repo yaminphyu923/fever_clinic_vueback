@@ -159,7 +159,7 @@ class PatientController extends Controller
             $bed->save();
         }
 
-        return ApiResponse::success('success',null);
+        return ApiResponse::success('success',$request->all());
     }
 
     /**
@@ -235,8 +235,13 @@ class PatientController extends Controller
 
     public function totalPatientImport(Request $request)
     {
+        // header('Access-Control-Allow-Origin: *');
+        // header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS, post, get');
+        // header("Access-Control-Max-Age", "3600");
+        // header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
+        // header("Access-Control-Allow-Credentials", "true");
         Excel::import(new PatientsImport, $request->file('patientFile')->store('temp'));
-        return back();
+        return response()->json('success');
     }
 
     public function searchTotalDate(Request $request){
@@ -260,9 +265,6 @@ class PatientController extends Controller
 
     public function inPatientPaginate(Request $request){
         if($request->search){
-
-
-
             $patients = Patient::with('user')
                                 ->where('name','like','%'.$request->search.'%')
                                 ->orwhere('nrc','like','%'.$request->search.'%')
